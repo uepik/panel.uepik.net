@@ -12,6 +12,9 @@ import HelloWorld from './components/HelloWorld.vue'
     </a>
   </div>
   <HelloWorld msg="Vite + Vue" />
+  <v-btn>
+    Button
+  </v-btn>
 </template>
 
 <style scoped>
