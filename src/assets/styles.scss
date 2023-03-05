@@ -8,10 +8,9 @@ $lines-color: #eeeeee;
 $lines-opacity: 0.05;
 
 *,
-.text-h5 {
+.text-h5,
+.text-caption {
   font-family: $body-font-family, serif !important;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 body,
@@ -70,5 +69,10 @@ body,
 
 input {
   font-size: 14px !important;
+  font-weight: 500 !important;
+}
+
+.text-caption {
+  letter-spacing: 0 !important;
   font-weight: 500 !important;
 }

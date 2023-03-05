@@ -169,6 +169,7 @@ const register = async () => {
             </v-window-item>
           </v-window>
         </v-card>
+        <p class="text-center mt-3 text-caption">Masz już konto? <router-link to="/login" class="text-decoration-none text-primary">Zaloguj się</router-link>.</p>
       </v-col>
     </v-row>
   </v-container>
