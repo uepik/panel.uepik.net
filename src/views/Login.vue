@@ -30,14 +30,17 @@ const register = async () => {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(userForm.value),
   })
+  
+  const userRes = await createUserResponse.json();
+  const userID = userRes.uid;
 
   const createCompanyResponse = await fetch('http://localhost:3030/companies', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(companyForm.value),
+    body: JSON.stringify({ ...companyForm.value, uid: userID }),
   })
 
-  const userRes = await createUserResponse.text();
+  
   const companyRes = await createCompanyResponse.text();
   isRegisterButtonLoading = false
 
