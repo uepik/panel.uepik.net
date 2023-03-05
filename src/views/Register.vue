@@ -1,63 +1,64 @@
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref } from 'vue'
 
 let tab = ref('Twoje dane')
 const items = ['Twoje dane', 'Dane firmy']
 
-const userForm = ref({
+const form = ref({
   firstLastName: '',
   email: '',
-  password: ''
-})
-
-const companyForm = ref({
-  nip: '',
-  name: '',
-  address: {
-    street: '',
-    zipCode: '',
-    city: ''
+  password: '',
+  company: {
+    nip: '',
+    name: '',
+    address: {
+      street: '',
+      zipCode: '',
+      city: ''
+    }
   }
 })
 
 let isRegisterButtonLoading = ref(false)
+let isAccountCreated = ref(false)
 
 const register = async () => {
-  isRegisterButtonLoading = true
+  isRegisterButtonLoading.value = true
 
-  const createUserResponse = await fetch('http://localhost:3030/users', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(userForm.value),
-  })
-  
-  const userRes = await createUserResponse.json();
-  const userID = userRes.uid;
-
-  const createCompanyResponse = await fetch('http://localhost:3030/companies', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ ...companyForm.value, uid: userID }),
-  })
-
-  
-  const companyRes = await createCompanyResponse.text();
-  isRegisterButtonLoading = false
-
-  console.log(userRes, companyRes);
+  if (!isAccountCreated.value) { // allow 1 register in session, needs improve on backend
+    const createUserQuery = await fetch('http://localhost:3030/users', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ...form.value,
+        createdAt: Date.now()
+      }),
+    })
+    
+    if (await createUserQuery.text()) {
+      isRegisterButtonLoading.value = false
+      isAccountCreated.value = true
+    }
+  }
 }
 </script>
 
 <template>
   <v-container>
     <v-row no-gutters>
-      <v-col cols="6" offset="3">
+      <v-col cols="4" offset="4">
         <v-card color="basil" md="5">
           <v-card-title class="text-center justify-center py-6">
             <h1 class="text-h5">
               Rejestracja
             </h1>
           </v-card-title>
+
+          <v-alert
+            text="Konto zostało utworzone, przejdź do logowania."
+            type="success"
+            v-if="isAccountCreated"
+          ></v-alert>
 
           <v-tabs
             v-model="tab"
@@ -87,19 +88,19 @@ const register = async () => {
                 <v-card-text v-if="tab == 'Twoje dane'">
                   <!-- First & last name -->
                   <v-text-field
-                    v-model="userForm.firstLastName"
+                    v-model="form.firstLastName"
                     label="Imię i nazwisko"
                   ></v-text-field>
 
                   <!-- E-mail -->
                   <v-text-field
-                    v-model="userForm.email"
+                    v-model="form.email"
                     label="Adres e-mail"
                   ></v-text-field>
 
                   <!-- Password -->
                   <v-text-field
-                    v-model="userForm.password"
+                    v-model="form.password"
                     label="Hasło"
                     type="password"
                   ></v-text-field>
@@ -117,7 +118,7 @@ const register = async () => {
                   <!-- Company info -->
                   <!-- NIP -->
                   <v-text-field
-                    v-model="companyForm.nip"
+                    v-model="form.company.nip"
                     label="Numer identyfikacji podatkowej (NIP)"
                     placeholder="7311795229"
                     required
@@ -125,7 +126,7 @@ const register = async () => {
 
                   <!-- Company name -->
                   <v-text-field
-                    v-model="companyForm.name"
+                    v-model="form.company.name"
                     label="Nazwa firmy"
                     placeholder="Fundacja John Doe"
                     required
@@ -133,7 +134,7 @@ const register = async () => {
 
                   <!-- Company address -->
                   <v-text-field
-                    v-model="companyForm.address.street"
+                    v-model="form.company.address.street"
                     label="Adres"
                     placeholder="al. Jerozolimskie 98"
                     required
@@ -141,7 +142,7 @@ const register = async () => {
 
                   <!-- Company postal code -->
                   <v-text-field
-                    v-model="companyForm.address.zipCode"
+                    v-model="form.company.address.zipCode"
                     label="Kod pocztowy"
                     placeholder="00-321"
                     required
@@ -149,7 +150,7 @@ const register = async () => {
 
                   <!-- Company city -->
                   <v-text-field
-                    v-model="companyForm.address.city"
+                    v-model="form.company.address.city"
                     label="Miejscowość"
                     placeholder="Warszawa"
                     required
@@ -160,6 +161,7 @@ const register = async () => {
                     block
                     color="primary"
                     :loading="isRegisterButtonLoading"
+                    :disabled="isAccountCreated"
                     @click="register()"
                   >
                     Zarejestruj się
