@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap');
+
+$body-font-family: 'Open Sans';
+$font-size-root: 14px !default;
+
+// Custom variables
+$lines-color: #eeeeee;
+$lines-opacity: 0.05;
+
+*,
+.text-h5 {
+  font-family: $body-font-family, serif !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body,
+.v-list-item--variant-plain,
+.v-list-item--variant-outlined,
+.v-list-item--variant-text,
+.v-list-item--variant-tonal,
+.bg-background,
+.v-app-bar,
+.v-card-text {
+  color: #323232 !important;
+}
+
+.v-toolbar-title {
+  font-size: 15px !important;
+  font-weight: 600 !important;
+}
+
+.userDetails {
+  &__title {
+    font-size: 15px !important;
+    font-weight: 500 !important;
+  }
+  &__organisation {
+    font-size: 13px !important;
+    opacity: 1 !important;
+    color: gray !important;
+    letter-spacing: 0 !important;
+    font-weight: 500 !important;
+  }
+}
+
+.v-btn__content {
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  font-weight: 600 !important;
+}
+
+.v-card-text {
+  letter-spacing: 0 !important;
+}
+
+.v-divider {
+  opacity: $lines-opacity !important;
+}
+
+.v-card-title {
+  border-bottom: 1px solid rgba(#000, $lines-opacity);
+}
+
+.v-card-title > span {
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  color: #323232 !important;
+}
+
+input {
+  font-size: 14px !important;
+  font-weight: 500 !important;
+}
