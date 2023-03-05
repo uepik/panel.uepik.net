@@ -54,8 +54,8 @@ const register = async () => {
       <v-col cols="6" offset="3">
         <v-card color="basil" md="5">
           <v-card-title class="text-center justify-center py-6">
-            <h1 class="font-weight-bold text-h2 text-basil">
-              BASiL
+            <h1 class="text-h5">
+              Rejestracja
             </h1>
           </v-card-title>
 
