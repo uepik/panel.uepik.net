@@ -1,5 +1,8 @@
 <script setup>
 import { ref, reactive } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const credentialsForm = ref({
   email: '',
@@ -11,14 +14,32 @@ let isButtonLoading = ref(false)
 const tryToLogIn = async () => {
   isButtonLoading.value = true
 
-  // ...
+  const query = await fetch('http://localhost:3030/auth', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(credentialsForm.value),
+  })
+
+  const response = await query.json();
+  
+  if (response.status === 200) {
+    isButtonLoading.value = false
+
+    // temporary save user data to localstorage
+    // will be replaced by Vuex in the future
+    localStorage.setItem('user', JSON.stringify(response.user))
+    router.push('/')
+  } else {
+    isButtonLoading.value = false
+    console.log('user not found')
+  }
 }
 </script>
 
 <template>
   <v-container>
     <v-row no-gutters>
-      <v-col cols="6" offset="3">
+      <v-col cols="4" offset="4">
         <v-card>
           <v-card-title class="text-center justify-center py-6 mb-4">
             <h1 class="text-h5">
