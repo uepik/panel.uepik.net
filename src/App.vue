@@ -2,8 +2,11 @@
 import { ref } from 'vue'
 import BugReportButton from './components/BugReportButton.vue'
 
+// User data
+const userData = JSON.parse(localStorage.getItem('user'))
+const isAuthenticated = userData.firstLastName || false
+
 const drawer = ref(true)
-const isAuthenticated = true
 
 const appNavigation = [
   { icon: 'mdi-finance', title: 'Podsumowanie' },
@@ -20,7 +23,7 @@ const userNavigation = [
 
 <template>
   <v-app id="inspire">
-    <template v-if="!isAuthenticated">
+    <template v-if="isAuthenticated">
       <!-- title -->
       <v-app-bar app color="white">
         <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
@@ -42,10 +45,10 @@ const userNavigation = [
             class="my-3"
           >
             <v-list-item-title class="userDetails__title">
-              Kacper Stawiński
+              {{ userData.firstLastName }}
             </v-list-item-title>
             <v-list-item-subtitle class="userDetails__organisation">
-              Fundacja im. John Doe
+              {{ userData.company.name }}
             </v-list-item-subtitle>
           </v-list-item>
         </template>
@@ -81,7 +84,7 @@ const userNavigation = [
           <div class="pa-2">
             <BugReportButton />
 
-            <v-btn block class="mt-1" variant="tonal">
+            <v-btn block class="mt-1" variant="tonal" to="/logout">
               Wyloguj się
             </v-btn>
           </div>
