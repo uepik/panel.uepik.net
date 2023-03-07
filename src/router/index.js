@@ -19,11 +19,17 @@ const routes = [
     path: '/register',
     name: 'Register',
     component: Register,
+    meta: {
+      requiresGuest: true
+    }
   },
   {
     path: '/login',
     name: 'Login',
     component: Login,
+    meta: {
+      requiresGuest: true
+    }
   },
   {
     path: '/logout',
@@ -32,23 +38,7 @@ const routes = [
     meta: {
       requiresAuth: true
     }
-  },
-  {
-    path: '/about',
-    name: 'About',
-    component: About,
-    meta: {
-      requiresAuth: true
-    }
-  },
-  {
-    path: '/test',
-    name: 'About',
-    component: About,
-    meta: {
-      requiresAuth: true
-    }
-  },
+  }
 ]
 
 const router = createRouter({
@@ -58,11 +48,21 @@ const router = createRouter({
 
 // Check is auth required
 router.beforeEach((to, from, next) => {
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (!store.getters.isAuth) {
-      return next('/login')
-    }
+  const isUserLoggedIn = store.getters.isAuth
+
+  const conditions = {
+    isLoginRequired: to.matched.some((record) => record.meta.requiresAuth),
+    isGuestRequired: to.matched.some((record) => record.meta.requiresGuest)
   }
+
+  if (conditions.isLoginRequired && !isUserLoggedIn) {
+    return next('/login')
+  }
+
+  if (conditions.isGuestRequired && isUserLoggedIn) {
+    return next('/')
+  }
+
   return next()
 });
 
