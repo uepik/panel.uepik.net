@@ -44,9 +44,9 @@ const register = async () => {
 </script>
 
 <template>
-  <v-container>
+  <v-container class="mt-10">
     <v-row no-gutters>
-      <v-col cols="4" offset="4">
+      <v-col sm="12" md="4" offset-md="4" justify="center">
         <v-card color="basil" md="5">
           <v-card-title class="text-center justify-center py-6">
             <h1 class="text-h5">
