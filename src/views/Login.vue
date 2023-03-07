@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, computed } from 'vue'
+import { ref, computed } from 'vue'
 // import { useRouter } from 'vue-router'
 import router from '../router'
 import { useStore } from 'vuex'
@@ -24,6 +24,11 @@ let isButtonLoading = ref(false)
 const tryToLogIn = () => {
   store.dispatch('login', credentialsForm.value)
     .then(() => router.push('/'))
+    .catch(() => router.push({
+      query: {
+        action:'invalid-auth-credentials'
+      }
+    }))
 }
 </script>
 
