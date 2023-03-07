@@ -24,14 +24,15 @@ const store = createStore({
   },
   actions: {
     login({ commit }, credentials) {
-      axios.post('http://localhost:3030/auth', credentials)
-        .then(response => {
-          commit('setUserData', response.data.user)
-          commit('setAuthStatus', true)
-        })
-        .catch(error => {
-          console.error('error: ', error)
-        })
+      return new Promise((resolve, reject) => {
+        axios.post('http://localhost:3030/auth', credentials)
+          .then(response => {
+            commit('setUserData', response.data.user)
+            commit('setAuthStatus', true)
+            resolve(response.status)
+          })
+          .catch(error =>  reject(error))
+      })
     },
     logout({ commit }) {
       commit('setUserData', {})
