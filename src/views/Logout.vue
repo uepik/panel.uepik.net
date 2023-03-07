@@ -1,11 +1,13 @@
 <script setup>
 import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 
 const router = useRouter()
+const store = useStore()
 
 const logout = () => {
-  localStorage.clear()
-  router.push('/login')
+  store.dispatch('logout')
+    .then(() => router.push('/login'))
 }
 
 logout()
