@@ -11,6 +11,11 @@ const actionsArr = [
     query: 'logged-out-successfully',
     vAlertType: 'success',
     message: 'Wylogowano poprawnie.'
+  },
+  {
+    query: 'invalid-auth-credentials',
+    vAlertType: 'error',
+    message: 'Podano błędny e-mail lub/i hasło.'
   }
 ]
 
