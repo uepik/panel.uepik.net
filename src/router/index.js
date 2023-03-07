@@ -56,7 +56,12 @@ router.beforeEach((to, from, next) => {
   }
 
   if (conditions.isLoginRequired && !isUserLoggedIn) {
-    return next('/login')
+    return next({
+      name: 'Login',
+      query: {
+        action: 'auth-required'
+      }
+    })
   }
 
   if (conditions.isGuestRequired && isUserLoggedIn) {

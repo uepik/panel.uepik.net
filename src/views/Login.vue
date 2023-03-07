@@ -3,6 +3,7 @@ import { ref, reactive, computed } from 'vue'
 // import { useRouter } from 'vue-router'
 import router from '../router'
 import { useStore } from 'vuex'
+import LoginActionAlert from '../components/LoginActionAlert.vue'
 
 // const router = useRouter()
 const store = useStore()
@@ -32,12 +33,17 @@ const tryToLogIn = () => {
       <v-row no-gutters>
         <v-col cols="4" offset="4">
           <v-card>
-            <v-card-title class="text-center justify-center py-6 mb-4">
+            <v-card-title class="text-center justify-center py-6">
               <h1 class="text-h5">
                 Logowanie
               </h1>
             </v-card-title>
-            <v-card-text>
+
+            <LoginActionAlert
+              v-if="$route.query.action"  
+              :actionQueryValue="$route.query.action" />
+
+            <v-card-text class="mt-3">
               <!-- E-mail -->
               <v-text-field
                 v-model="credentialsForm.email"

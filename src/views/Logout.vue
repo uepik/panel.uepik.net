@@ -7,7 +7,12 @@ const store = useStore()
 
 const logout = () => {
   store.dispatch('logout')
-    .then(() => router.push('/login'))
+    .then(() => router.push({
+      name: 'Login',
+      query: {
+        action: 'logged-out-successfully'
+      }
+    }))
 }
 
 logout()
