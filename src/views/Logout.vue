@@ -1,0 +1,23 @@
+<script setup>
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+
+const router = useRouter()
+const store = useStore()
+
+const logout = () => {
+  store.dispatch('logout')
+    .then(() => router.push('/login'))
+}
+
+logout()
+</script>
+
+<template>
+  <v-container>
+    panel wylogowania
+  </v-container>
+</template>
+
+<style scoped>
+</style>

@@ -1,177 +1,75 @@
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed } from 'vue'
+// import { useRouter } from 'vue-router'
+import router from '../router'
+import { useStore } from 'vuex'
 
-let tab = ref('Twoje dane')
-const items = ['Twoje dane', 'Dane firmy']
+// const router = useRouter()
+const store = useStore()
 
-const userForm = ref({
-  firstLastName: '',
+const credentialsForm = ref({
   email: '',
   password: ''
 })
 
-const companyForm = ref({
-  nip: '',
-  name: '',
-  address: {
-    street: '',
-    zipCode: '',
-    city: ''
-  }
+let user = {}
+
+computed(() => {
+  user = store.getters.user
 })
 
-let isRegisterButtonLoading = ref(false)
+let isButtonLoading = ref(false)
 
-const register = async () => {
-  isRegisterButtonLoading = true
-
-  const createUserResponse = await fetch('http://localhost:3030/users', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(userForm.value),
-  })
-  
-  const userRes = await createUserResponse.json();
-  const userID = userRes.uid;
-
-  const createCompanyResponse = await fetch('http://localhost:3030/companies', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ ...companyForm.value, uid: userID }),
-  })
-
-  
-  const companyRes = await createCompanyResponse.text();
-  isRegisterButtonLoading = false
-
-  console.log(userRes, companyRes);
+const tryToLogIn = () => {
+  store.dispatch('login', credentialsForm.value)
+    .then(() => router.push('/'))
 }
 </script>
 
 <template>
-  <v-container>
-    <v-row no-gutters>
-      <v-col cols="6" offset="3">
-        <v-card color="basil" md="5">
-          <v-card-title class="text-center justify-center py-6">
-            <h1 class="font-weight-bold text-h2 text-basil">
-              BASiL
-            </h1>
-          </v-card-title>
+  <v-main class="mt-10">
+    <v-container>
+      <v-row no-gutters>
+        <v-col cols="4" offset="4">
+          <v-card>
+            <v-card-title class="text-center justify-center py-6 mb-4">
+              <h1 class="text-h5">
+                Logowanie
+              </h1>
+            </v-card-title>
+            <v-card-text>
+              <!-- E-mail -->
+              <v-text-field
+                v-model="credentialsForm.email"
+                label="Adres e-mail"
+                :autofocus="true"
+                hide-details
+              ></v-text-field>
 
-          <v-tabs
-            v-model="tab"
-            bg-color="transparent"
-            color="primary"
-            grow
-          >
-            <v-tab
-              v-for="item in items"
-              :key="item"
-              :value="item"
-            >
-              {{ item }}
-            </v-tab>
-          </v-tabs>
+              <!-- Password -->
+              <v-text-field
+                v-model="credentialsForm.password"
+                label="Hasło"
+                type="password"
+                class="mt-2"
+              ></v-text-field>
 
-          <v-window v-model="tab">
-            <v-window-item
-              v-for="item in items"
-              :key="item"
-              :value="item"
-            >
-              <v-card
-                color="basil"
-                flat
+              <!-- SEND -->
+              <v-btn
+                block
+                color="primary"
+                :loading="isButtonLoading"
+                @click="tryToLogIn()"
               >
-                <v-card-text v-if="tab == 'Twoje dane'">
-                  <!-- First & last name -->
-                  <v-text-field
-                    v-model="userForm.firstLastName"
-                    label="Imię i nazwisko"
-                  ></v-text-field>
-
-                  <!-- E-mail -->
-                  <v-text-field
-                    v-model="userForm.email"
-                    label="Adres e-mail"
-                  ></v-text-field>
-
-                  <!-- Password -->
-                  <v-text-field
-                    v-model="userForm.password"
-                    label="Hasło"
-                    type="password"
-                  ></v-text-field>
-
-                  <!-- SEND -->
-                  <v-btn
-                    block
-                    variant="tonal"
-                    @click="tab = 'Dane firmy'"
-                  >
-                    Przejdź dalej
-                  </v-btn>
-                </v-card-text>
-                <v-card-text v-else>
-                  <!-- Company info -->
-                  <!-- NIP -->
-                  <v-text-field
-                    v-model="companyForm.nip"
-                    label="Numer identyfikacji podatkowej (NIP)"
-                    placeholder="7311795229"
-                    required
-                  ></v-text-field>
-
-                  <!-- Company name -->
-                  <v-text-field
-                    v-model="companyForm.name"
-                    label="Nazwa firmy"
-                    placeholder="Fundacja John Doe"
-                    required
-                  ></v-text-field>
-
-                  <!-- Company address -->
-                  <v-text-field
-                    v-model="companyForm.address.street"
-                    label="Adres"
-                    placeholder="al. Jerozolimskie 98"
-                    required
-                  ></v-text-field>
-
-                  <!-- Company postal code -->
-                  <v-text-field
-                    v-model="companyForm.address.zipCode"
-                    label="Kod pocztowy"
-                    placeholder="00-321"
-                    required
-                  ></v-text-field>
-
-                  <!-- Company city -->
-                  <v-text-field
-                    v-model="companyForm.address.city"
-                    label="Miejscowość"
-                    placeholder="Warszawa"
-                    required
-                  ></v-text-field>
-
-                  <!-- SEND -->
-                  <v-btn
-                    block
-                    color="primary"
-                    :loading="isRegisterButtonLoading"
-                    @click="register()"
-                  >
-                    Zarejestruj się
-                  </v-btn>
-                </v-card-text>
-              </v-card>
-            </v-window-item>
-          </v-window>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+                Zaloguj się
+              </v-btn>
+            </v-card-text>
+          </v-card>
+          <p class="text-center mt-3 text-caption">Nie masz konta? <router-link to="/register" class="text-decoration-none text-primary">Zarejestruj się</router-link>.</p>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-main>
 </template>
 
 <style scoped>
