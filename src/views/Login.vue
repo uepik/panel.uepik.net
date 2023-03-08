@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 import router from '@/router'
 import { useStore } from 'vuex'
 import LoginActionAlert from '@/components/LoginActionAlert.vue'
+import PrivacyPolicyDisclaimer from '@/components/PrivacyPolicyDisclaimer.vue'
 
 // const router = useRouter()
 const store = useStore()
@@ -72,9 +73,25 @@ const tryToLogIn = () => {
             >
               Zaloguj się
             </v-btn>
+
+            <!-- REDIRECT TO REGISTER -->
+            <v-btn
+              block
+              class="mt-1"
+              variant="plain"
+              to="/register"
+            >
+              Nie masz konta? Zarejestruj się!
+            </v-btn>
           </v-card-text>
         </v-card>
-        <p class="text-center mt-3 text-caption">Nie masz konta? <router-link to="/register" class="text-decoration-none text-primary">Zarejestruj się</router-link>.</p>
+
+        <!-- AuthDisclaimer -->
+        <!-- <p class="text-center mt-5 text-caption text-disabled">
+          Rejestrując lub logując do serwisu, akceptujesz<br/>
+          <a href="https://uepik.net/polityka-prywatnosci#" target="_blank" class="text-decoration-none text-grey-darken-2">politykę prywatności</a> oraz <a href="https://uepik.net/regulamin#" class="text-decoration-none text-grey-darken-2">regulamin</a>.
+        </p> -->
+        <PrivacyPolicyDisclaimer />
       </v-col>
     </v-row>
   </v-container>

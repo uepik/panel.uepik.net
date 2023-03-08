@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import PrivacyPolicyDisclaimer from '@/components/PrivacyPolicyDisclaimer.vue'
 
 let tab = ref('Twoje dane')
 const items = ['Twoje dane', 'Dane firmy']
@@ -113,6 +114,16 @@ const register = async () => {
                   >
                     Przejdź dalej
                   </v-btn>
+
+                  <!-- REDIRECT TO LOGIN -->
+                  <v-btn
+                    block
+                    class="mt-1"
+                    variant="plain"
+                    to="/login"
+                  >
+                    Masz juz konto? Zaloguj się!
+                  </v-btn>
                 </v-card-text>
                 <v-card-text v-else>
                   <!-- Company info -->
@@ -166,12 +177,23 @@ const register = async () => {
                   >
                     Zarejestruj się
                   </v-btn>
+
+                  <!-- REDIRECT TO LOGIN -->
+                  <v-btn
+                    block
+                    class="mt-1"
+                    variant="plain"
+                    to="/login"
+                  >
+                    Masz juz konto? Zaloguj się!
+                  </v-btn>
                 </v-card-text>
               </v-card>
             </v-window-item>
           </v-window>
         </v-card>
-        <p class="text-center mt-3 text-caption">Masz już konto? <router-link to="/login" class="text-decoration-none text-primary">Zaloguj się</router-link>.</p>
+
+        <PrivacyPolicyDisclaimer />
       </v-col>
     </v-row>
   </v-container>
