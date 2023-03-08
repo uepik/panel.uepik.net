@@ -17,12 +17,3 @@ const logout = () => {
 
 logout()
 </script>
-
-<template>
-  <v-container>
-    panel wylogowania
-  </v-container>
-</template>
-
-<style scoped>
-</style>

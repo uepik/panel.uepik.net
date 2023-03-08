@@ -1,9 +1,6 @@
 import { createStore } from 'vuex'
-import { useRouter } from 'vue-router'
 import axios from 'axios'
 import createPersistedState from 'vuex-persistedstate'
-
-const router = useRouter()
 
 const store = createStore({
   state: {

@@ -1,9 +1,9 @@
 import { createWebHistory, createRouter } from 'vue-router'
+import store from '@/store'
 import Dashboard from '@/views/Dashboard.vue'
 import Register from '@/views/Register.vue'
 import Login from '@/views/Login.vue'
 import Logout from '@/views/Logout.vue'
-import store from '@/store'
 
 const routes = [
   {
@@ -19,7 +19,7 @@ const routes = [
     name: 'Register',
     component: Register,
     meta: {
-      requiresGuest: true
+      requiresAuth: false
     }
   },
   {
@@ -27,7 +27,7 @@ const routes = [
     name: 'Login',
     component: Login,
     meta: {
-      requiresGuest: true
+      requiresAuth: false
     }
   },
   {
@@ -42,28 +42,22 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(),
-  routes,
+  routes
 })
 
 // Check is auth required
 router.beforeEach((to, from, next) => {
   const isUserLoggedIn = store.getters.isAuth
+  const isLoginRequired = to.matched.some((record) => record.meta.requiresAuth)
 
-  const conditions = {
-    isLoginRequired: to.matched.some((record) => record.meta.requiresAuth),
-    isGuestRequired: to.matched.some((record) => record.meta.requiresGuest)
-  }
-
-  if (conditions.isLoginRequired && !isUserLoggedIn) {
+  if (isLoginRequired && !isUserLoggedIn) {
     return next({
       name: 'Login',
       query: {
         action: 'auth-required'
       }
     })
-  }
-
-  if (conditions.isGuestRequired && isUserLoggedIn) {
+  } else if (!isLoginRequired && isUserLoggedIn) {
     return next('/')
   }
 

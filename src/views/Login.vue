@@ -1,25 +1,21 @@
 <script setup>
-import { ref, computed } from 'vue'
-import router from '@/router'
+import { ref } from 'vue'
 import { useStore } from 'vuex'
+import router from '@/router'
 import LoginActionAlert from '@/components/LoginActionAlert.vue'
 import PrivacyPolicyDisclaimer from '@/components/PrivacyPolicyDisclaimer.vue'
 
-// const router = useRouter()
-const store = useStore()
-
+// Form v-model
 const credentialsForm = ref({
   email: '',
   password: ''
 })
 
-let user = {}
-
-computed(() => {
-  user = store.getters.user
-})
-
+// Button loading when fetching
 let isButtonLoading = ref(false)
+
+// Login
+const store = useStore()
 
 const tryToLogIn = () => {
   store.dispatch('login', credentialsForm.value)
@@ -86,16 +82,8 @@ const tryToLogIn = () => {
           </v-card-text>
         </v-card>
 
-        <!-- AuthDisclaimer -->
-        <!-- <p class="text-center mt-5 text-caption text-disabled">
-          Rejestrując lub logując do serwisu, akceptujesz<br/>
-          <a href="https://uepik.net/polityka-prywatnosci#" target="_blank" class="text-decoration-none text-grey-darken-2">politykę prywatności</a> oraz <a href="https://uepik.net/regulamin#" class="text-decoration-none text-grey-darken-2">regulamin</a>.
-        </p> -->
         <PrivacyPolicyDisclaimer />
       </v-col>
     </v-row>
   </v-container>
 </template>
-
-<style scoped>
-</style>

@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import PrivacyPolicyDisclaimer from '@/components/PrivacyPolicyDisclaimer.vue'
 
 let tab = ref('Twoje dane')
-const items = ['Twoje dane', 'Dane firmy']
+const viewTabItems = ['Twoje dane', 'Dane firmy']
 
 const form = ref({
   firstLastName: '',
@@ -198,6 +198,3 @@ const register = async () => {
     </v-row>
   </v-container>
 </template>
-
-<style scoped>
-</style>

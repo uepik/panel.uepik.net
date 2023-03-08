@@ -36,9 +36,9 @@ export default createVuetify({
   defaults: {
     global: {
       elevation: '0',
-    },
+    }
   },
   styles: { configFile: 'src/assets/styles.scss' },
   components,
-  directives,
+  directives
 })
