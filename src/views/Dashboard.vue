@@ -1,7 +1,7 @@
 <script setup >
 import { ref } from 'vue'
-import BugReportButton from '../components/BugReportButton.vue'
-import HelloWorld from '../components/HelloWorld.vue'
+import BugReportButton from '@/components/BugReportButton.vue'
+import HelloWorld from '@/components/HelloWorld.vue'
 
 const cardText = ref(`Lorem ipsum dolor sit amet consectetur adipisicing elit.
   Commodi, ratione debitis quis est labore voluptatibus! Eaque

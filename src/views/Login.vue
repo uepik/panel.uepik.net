@@ -1,9 +1,8 @@
 <script setup>
 import { ref, computed } from 'vue'
-// import { useRouter } from 'vue-router'
-import router from '../router'
+import router from '@/router'
 import { useStore } from 'vuex'
-import LoginActionAlert from '../components/LoginActionAlert.vue'
+import LoginActionAlert from '@/components/LoginActionAlert.vue'
 
 // const router = useRouter()
 const store = useStore()

@@ -6,7 +6,7 @@ import * as directives from 'vuetify/directives'
 // Styles
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
-import '../assets/styles.scss'
+import '@/assets/styles.scss'
 
 // UEPiK theme
 const customLightTheme = {
