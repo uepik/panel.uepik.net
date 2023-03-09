@@ -46,7 +46,7 @@ const userNavigation = [
               {{ $store.getters.user.firstLastName }}
             </v-list-item-title>
             <v-list-item-subtitle class="userDetails__organisation">
-              {{ $store.getters.user.company.name }}
+              {{ $store.getters.company.name }}
             </v-list-item-subtitle>
           </v-list-item>
         </template>

@@ -6,17 +6,30 @@ const store = createStore({
   state: {
     isAuth: false,
     user: {},
+    company: {}
   },
   getters: {
     isAuth: (state) => state.isAuth,
-    user: (state) => state.user
+    user: (state) => state.user,
+    company: (state) => state.company
   },
   mutations: {
     setAuthStatus(state, status) {
       state.isAuth = status
     },
-    setUserData(state, userDataPayload) {
-      state.user = userDataPayload
+    setUserData(state, loginResponse) {
+      const { _id, firstLastName, email, createdAt, photo } = loginResponse
+      const { company } = loginResponse
+  
+      state.user = {
+        _id,
+        firstLastName,
+        email,
+        createdAt,
+        photo
+      }
+
+      state.company = company
     }
   },
   actions: {
