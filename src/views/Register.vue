@@ -70,7 +70,7 @@ const register = async () => {
             grow
           >
             <v-tab
-              v-for="item in items"
+              v-for="item in viewTabItems"
               :key="item"
               :value="item"
             >
@@ -80,7 +80,7 @@ const register = async () => {
 
           <v-window v-model="tab">
             <v-window-item
-              v-for="item in items"
+              v-for="item in viewTabItems"
               :key="item"
               :value="item"
             >
