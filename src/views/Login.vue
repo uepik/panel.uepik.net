@@ -32,6 +32,8 @@ const tryToLogIn = () => {
   <v-container class="mt-10">
     <v-row no-gutters>
       <v-col sm="12" md="4" offset-md="4" justify="center">
+        <img src="/uepik_logo.svg" alt="" width="140" class="mb-6 mx-auto d-block">
+
         <v-card>
           <v-card-title class="text-center justify-center py-6">
             <h1 class="text-h5">
