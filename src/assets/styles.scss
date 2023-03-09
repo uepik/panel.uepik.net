@@ -58,13 +58,11 @@ body,
 }
 
 .v-card-title {
-  border-bottom: 1px solid rgba(#000, $lines-opacity);
-}
-
-.v-card-title > span {
-  font-size: 15px !important;
+  font-size: 14px !important;
   font-weight: 600 !important;
   color: #323232 !important;
+  margin-bottom: 10px !important;
+  letter-spacing: 0 !important;
 }
 
 input {
@@ -80,4 +78,8 @@ input {
 .v-alert__content {
   font-size: 14px !important;
   font-weight: 500 !important;
+}
+
+.v-selection-control--inline .v-label {
+  font-size: 12px !important;
 }

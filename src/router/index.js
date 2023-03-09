@@ -4,6 +4,7 @@ import Dashboard from '@/views/Dashboard.vue'
 import Register from '@/views/Register.vue'
 import Login from '@/views/Login.vue'
 import Logout from '@/views/Logout.vue'
+import Settings from '@/views/Settings.vue'
 
 const routes = [
   {
@@ -34,6 +35,14 @@ const routes = [
     path: '/logout',
     name: 'Logout',
     component: Logout,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/settings',
+    name: 'Settings',
+    component: Settings,
     meta: {
       requiresAuth: true
     }
