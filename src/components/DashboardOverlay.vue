@@ -5,15 +5,17 @@ import BugReportButton from '@/components/BugReportButton.vue'
 const drawer = ref(true)
 
 const appNavigation = [
-  { icon: 'mdi-finance', title: 'Podsumowanie' },
-  { icon: 'mdi-briefcase-plus', title: 'Przychody' },
-  { icon: 'mdi-briefcase-minus', title: 'Koszty' },
-  { icon: 'mdi-file-download-outline', title: 'Raporty' }
+  { icon: 'mdi-chart-box', title: 'Podsumowanie', routing: '/' },
+  { icon: 'mdi-plus-box', title: 'Przychody', routing: '/revenues' },
+  { icon: 'mdi-minus-box', title: 'Koszty', routing: '/expenses' },
+  { icon: 'mdi-clipboard-account', title: 'Zatrudnienie', routing: '/employment' },
+  { icon: 'mdi-folder-text', title: 'Środki trwałe', routing: '/fixedAssets' },
+  { icon: 'mdi-download-box', title: 'Raporty', routing: '/reports' }
 ]
 
 const userNavigation = [
-  { icon: 'mdi-account', title: 'Moje konto' },
-  { icon: 'mdi-cog', title: 'Ustawienia firmy' }
+  { icon: 'mdi-cog', title: 'Ustawienia', routing: '/settings' },
+  { icon: 'mdi-logout', title: 'Wyloguj się', routing: '/logout' }
 ]
 </script>
 
@@ -58,6 +60,7 @@ const userNavigation = [
             :key="item.id"
             :prepend-icon="item.icon"
             :title="item.title"
+            :to="item.routing"
             value="home"
           ></v-list-item>
         </v-list>
@@ -71,6 +74,7 @@ const userNavigation = [
             :key="item.id"
             :prepend-icon="item.icon"
             :title="item.title"
+            :to="item.routing"
             value="home"
           ></v-list-item>
         </v-list>
