@@ -1,81 +1,76 @@
 <script setup >
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 import BugReportButton from '@/components/BugReportButton.vue'
+import { useStore } from 'vuex'
 
-const drawer = ref(true)
+const store = useStore()
 
-const appNavigation = [
-  { icon: 'mdi-chart-box', title: 'Podsumowanie', routing: '/' },
-  { icon: 'mdi-plus-box', title: 'Przychody', routing: '/revenues' },
-  { icon: 'mdi-minus-box', title: 'Koszty', routing: '/expenses' },
-  { icon: 'mdi-clipboard-account', title: 'Zatrudnienie', routing: '/employment' },
-  { icon: 'mdi-folder-text', title: 'Środki trwałe', routing: '/fixedAssets' },
-  { icon: 'mdi-download-box', title: 'Raporty', routing: '/reports' }
+const navigation = [
+  {
+    name: 'Aplikacja',
+    items: [
+      { icon: 'mdi-chart-box', title: 'Podsumowanie', routing: '/' },
+      { icon: 'mdi-plus-box', title: 'Przychody', routing: '/revenues' },
+      { icon: 'mdi-minus-box', title: 'Koszty', routing: '/expenses' },
+      { icon: 'mdi-clipboard-account', title: 'Zatrudnienie', routing: '/employment' },
+      { icon: 'mdi-folder-text', title: 'Środki trwałe', routing: '/fixedAssets' },
+      { icon: 'mdi-download-box', title: 'Raporty', routing: '/reports' }
+    ]
+  },
+  {
+    name: 'Konto',
+    items: [
+      { icon: 'mdi-cog', title: 'Ustawienia', routing: '/settings' },
+      { icon: 'mdi-logout', title: 'Wyloguj się', routing: '/logout' }
+    ]
+  }
 ]
 
-const userNavigation = [
-  { icon: 'mdi-cog', title: 'Ustawienia', routing: '/settings' },
-  { icon: 'mdi-logout', title: 'Wyloguj się', routing: '/logout' }
-]
+const user = reactive({
+  ...store.getters.user,
+  isAuth: store.getters.isAuth
+})
+const company = reactive({ ...store.getters.company })
 </script>
 
 <template>
   <v-app id="inspire">
-    <template v-if="$store.getters.isAuth">
-      <!-- title -->
-      <v-app-bar app color="white">
-        <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-
-        <v-toolbar-title>Panel UEPiK.net</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-btn icon><v-icon>mdi-dots-vertical</v-icon></v-btn>
-      </v-app-bar>
-
+    <template v-if="user.isAuth">
       <!-- navigation -->
-      <v-navigation-drawer
-        permanent
-        border="0"
-      >
+      <v-navigation-drawer permanent border="0">
         <template v-slot:prepend>
+          <v-list-item-media class="py-5 text-center">
+            <img src="/uepik_logo.svg" height="30">
+          </v-list-item-media>
+
+          <v-divider />
+
           <v-list-item
             lines="two"
-            prepend-avatar="https://scontent-waw1-1.xx.fbcdn.net/v/t39.30808-6/328967012_1277859476125827_4065357418528766058_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=2D1nkxYXOjEAX_1W2aW&_nc_ht=scontent-waw1-1.xx&oh=00_AfB_wPQO9Aj9juOk7scu1g18pEfgy5avPT0fUNmKBoXYrQ&oe=6408648A"
+            :prepend-avatar="user.photo"
             class="my-3"
           >
             <v-list-item-title class="userDetails__title">
-              {{ $store.getters.user.firstLastName }}
+              {{ user.firstLastName }}
             </v-list-item-title>
             <v-list-item-subtitle class="userDetails__organisation">
-              {{ $store.getters.company.name }}
+              {{ company.name }}
             </v-list-item-subtitle>
           </v-list-item>
         </template>
 
-        <v-divider></v-divider>
+        <v-divider />
 
         <!-- App navigation items -->
-        <v-list density="compact" nav>
+        <v-list density="compact" nav v-for="navCategory in navigation" :key="navCategory.name">
+          <v-list-subheader class="font-weight-500">{{ navCategory.name }}</v-list-subheader>
           <v-list-item
-            v-for="item in appNavigation"
+            v-for="item in navCategory.items"
             :key="item.id"
             :prepend-icon="item.icon"
             :title="item.title"
             :to="item.routing"
-            value="home"
-          ></v-list-item>
-        </v-list>
-        
-        <v-divider></v-divider>
-        
-        <!-- User nav items -->
-        <v-list density="compact" nav>
-          <v-list-item
-            v-for="item in userNavigation"
-            :key="item.id"
-            :prepend-icon="item.icon"
-            :title="item.title"
-            :to="item.routing"
-            value="home"
+            active-color="primary"
           ></v-list-item>
         </v-list>
 

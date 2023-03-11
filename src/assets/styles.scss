@@ -8,7 +8,12 @@ $lines-color: #eeeeee;
 $lines-opacity: 0.05;
 
 *,
+.text-h1,
+.text-h2,
+.text-h3,
+.text-h4,
 .text-h5,
+.text-h6,
 .text-caption {
   font-family: $body-font-family, serif !important;
 }
@@ -70,7 +75,8 @@ input {
   font-weight: 500 !important;
 }
 
-.text-caption {
+.text-caption,
+.v-list-subheader__text {
   letter-spacing: 0 !important;
   font-weight: 500 !important;
 }
@@ -82,4 +88,8 @@ input {
 
 .v-selection-control--inline .v-label {
   font-size: 12px !important;
+}
+
+.v-navigation-drawer, .v-card {
+  box-shadow: rgba(27, 31, 35, 0.04) 0px 1px 0px, rgba(255, 255, 255, 0.25) 0px 1px 0px inset !important;
 }
