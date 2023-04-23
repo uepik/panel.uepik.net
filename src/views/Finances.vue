@@ -1,24 +1,16 @@
 <script setup >
 import DashboardOverlay from '@/components/DashboardOverlay.vue'
 import AddTransaction from '@/components/AddTransaction.vue'
-import { ref, reactive } from 'vue';
-import { useStore } from 'vuex';
+import { ref, reactive } from 'vue'
+import { useStore } from 'vuex'
 
 const store = useStore()
-
-const incomesPreview = [
-  { lp: 1, sum: 33.31, company: 'X-KOM Sp. z o.o.'},
-  { lp: 2, sum: 84.25, company: 'Auchan Sp. k.'},
-  { lp: 3, sum: 11.76, company: 'Carrefour Sp. k.'},
-  { lp: 4, sum: 311.76, company: 'Biedronka Sp. z o.o.'},
-  { lp: 5, sum: 33.31, company: 'X-KOM Sp. z o.o.'},
-  { lp: 6, sum: 84.25, company: 'Auchan Sp. k.'},
-  { lp: 7, sum: 11.76, company: 'Carrefour Sp. k.'}
-]
 
 const tab = ref('one')
 
 const transactions = reactive({ ...store.getters.transactions })
+
+const moneyFormatter = (value) => value.toLocaleString('pl-PL', { style: 'currency', currency: 'PLN' });
 </script>
 
 <template>
@@ -28,8 +20,6 @@ const transactions = reactive({ ...store.getters.transactions })
         <h2 class="text-h4 view-title">Ewidencja przychodów i kosztów</h2>
       </v-col>
     </v-row>
-
-    
 
     <v-row>
       <v-col col="12">
@@ -63,6 +53,9 @@ const transactions = reactive({ ...store.getters.transactions })
                           Rodzaj
                         </th>
                         <th class="text-left">
+                          Data
+                        </th>
+                        <th class="text-left">
                           Kwota
                         </th>
                         <th class="text-left">
@@ -92,7 +85,10 @@ const transactions = reactive({ ...store.getters.transactions })
                           </v-chip>
         
                         </td>
-                        <td>{{ item.createdAt }}</td>
+                        <td>{{ new Date(item.createdAt).toLocaleDateString() }}</td>
+                        <td>
+                          {{ item.isIncome ? moneyFormatter(item.income.sum) : `-${ moneyFormatter(item.revenue.deductible + item.revenue.ineligible) }` }}
+                        </td>
                         <td><v-chip size="small" link>{{ item.contractor.name }}</v-chip></td>
                         <td>
                           <v-chip size="x-small" link>
