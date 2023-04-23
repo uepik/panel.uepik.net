@@ -20,6 +20,12 @@ const companyHandleSaveClick = () => {
 <template>
   <DashboardOverlay>
     <v-row>
+      <v-col>
+        <h2 class="text-h4 view-title">Zarządzaj ustawieniami</h2>
+      </v-col>
+    </v-row>
+
+    <v-row>
       <v-col md="6" sm="12">
         <v-card>
           <v-card-title>Ustawienia konta</v-card-title>

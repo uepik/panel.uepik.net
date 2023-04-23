@@ -6,16 +6,21 @@ const store = createStore({
   state: {
     isAuth: false,
     user: {},
-    company: {}
+    company: {},
+    transactions: []
   },
   getters: {
     isAuth: (state) => state.isAuth,
     user: (state) => state.user,
-    company: (state) => state.company
+    company: (state) => state.company,
+    transactions: (state) => state.transactions
   },
   mutations: {
     setAuthStatus(state, status) {
       state.isAuth = status
+    },
+    setTransactionsList(state, transactions) {
+      state.transactions = transactions
     },
     setUserData(state, loginResponse) {
       const { _id, firstLastName, email, createdAt, photo } = loginResponse
@@ -33,12 +38,13 @@ const store = createStore({
     }
   },
   actions: {
-    login({ commit }, credentials) {
+    login({ commit, dispatch }, credentials) {
       return new Promise((resolve, reject) => {
         axios.post('http://localhost:3030/auth', credentials)
           .then(response => {
             commit('setUserData', response.data.user)
             commit('setAuthStatus', true)
+            dispatch('getTransactions')
             resolve(response.status)
           })
           .catch(error =>  reject(error))
@@ -47,6 +53,17 @@ const store = createStore({
     logout({ commit }) {
       commit('setUserData', {})
       commit('setAuthStatus', false)
+    },
+    getTransactions({ commit, state }) {
+      return new Promise((resolve, reject) => {
+        axios.get(`http://localhost:3030/transactions/${state.user._id}`)
+          .then(response => {
+            console.log(response.data)
+            commit('setTransactionsList', response.data)
+            resolve(response.data)
+          })
+          .catch(error =>  reject(error))
+      })
     }
   },
   modules: {},

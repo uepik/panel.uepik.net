@@ -10,8 +10,7 @@ const navigation = [
     name: 'Aplikacja',
     items: [
       { icon: 'mdi-chart-box', title: 'Podsumowanie', routing: '/' },
-      { icon: 'mdi-plus-box', title: 'Przychody', routing: '/revenues' },
-      { icon: 'mdi-minus-box', title: 'Koszty', routing: '/expenses' },
+      { icon: 'mdi-plus-minus-variant', title: 'Finanse', routing: '/finances' },
       { icon: 'mdi-clipboard-account', title: 'Zatrudnienie', routing: '/employment' },
       { icon: 'mdi-folder-text', title: 'Środki trwałe', routing: '/fixedAssets' },
       { icon: 'mdi-download-box', title: 'Raporty', routing: '/reports' }
@@ -37,7 +36,7 @@ const company = reactive({ ...store.getters.company })
   <v-app id="inspire">
     <template v-if="user.isAuth">
       <!-- navigation -->
-      <v-navigation-drawer permanent border="0">
+      <v-navigation-drawer app permanent disable-resize-watcher border="0">
         <template v-slot:prepend>
           <v-list-item-media class="py-5 text-center">
             <img src="/uepik_logo.svg" height="30">
