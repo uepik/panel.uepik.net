@@ -22,12 +22,11 @@ const form = reactive({
   income: {
     charity: 0,
     noCharity: 0,
-    other: 0,
-    sum: 1299.99
+    other: 0
   },
   revenue: {
     deductible: 0,
-    ineligible: 0,
+    ineligible: 0
   }
 })
 
@@ -67,16 +66,16 @@ const addTransaction = async () => {
       </v-radio-group>
 
     <v-row>
-      <v-col md="6" sm="12">
-        <v-text-field
-          label="Numer dokumentu księgowego"
-          v-model="form.invoiceNumber" />
-      </v-col>
-      <v-col md="6" sm="12">
+      <v-col md="3" sm="12">
         <v-text-field
           label="Data zdarzenia lub operacji"
           type="date"
           v-model="form.operationDate" />
+      </v-col>
+      <v-col md="9" sm="12">
+        <v-text-field
+          label="Numer dokumentu księgowego"
+          v-model="form.invoiceNumber" />
       </v-col>
     </v-row>
 
@@ -85,13 +84,21 @@ const addTransaction = async () => {
         v-model="form.description" />
 
     <p class="font-weight-medium mb-3 mt-6">Dane kontrahenta</p>
-    <v-row>
-      <v-col md="4" sm="12">
+    <v-row align="center">
+      <v-col md="3" sm="12">
         <v-text-field
           label="NIP kontrahenta"
-          v-model="form.contractor.nip" />
+          v-model.number="form.contractor.nip" />
       </v-col>
-      <v-col md="8" sm="12">
+
+      <v-btn 
+        @click="fetchCompanyByNIP"
+        variant="tonal"
+      >Uzupełnij dane po numerze NIP</v-btn>
+    </v-row>
+
+    <v-row>
+      <v-col md="12" sm="12">
         <v-text-field
           label="Nazwa kontrahenta"
           v-model="form.contractor.name" />
@@ -99,12 +106,12 @@ const addTransaction = async () => {
     </v-row>
 
     <v-row>
-      <v-col md="4" sm="12">
+      <v-col md="6" sm="12">
         <v-text-field
-          label="Adres kontrahenta"
+          label="Ulica i numer lokalu"
           v-model="form.contractor.address" />
       </v-col>
-      <v-col md="4" sm="12">
+      <v-col md="2" sm="12">
         <v-text-field
           label="Kod pocztowy"
           v-model="form.contractor.zipCode" />
@@ -119,34 +126,27 @@ const addTransaction = async () => {
     <template v-if="form.isIncome">
       <p class="font-weight-medium mb-3 mt-6">Przychody określone w art. 10a ust. 1 pkt 4 lit. a-d ustawy o działalności pożytku publicznego i o wolontariacie</p>
       <v-row>
-        <v-col md="3" sm="12">
+        <v-col md="4" sm="12">
           <v-text-field
             label="Działalność nieodpłatna"
             hint="Przychody z działalności nieodpłatnej pożytku publicznego"
             persistent-hint
             suffix="zł"
-            v-model="form.income.charity" />
+            v-model.number="form.income.charity" />
         </v-col>
-        <v-col md="3" sm="12">
+        <v-col md="4" sm="12">
           <v-text-field
             label="Działalność odpłatna"
             hint="Przychody z działalności odpłatnej pożytku publicznego z tytułu sprzedaży towarów i usług"
             persistent-hint
             suffix="zł"
-            v-model="form.income.noCharity" />
+            v-model.number="form.income.noCharity" />
         </v-col>
-        <v-col md="3" sm="12">
+        <v-col md="4" sm="12">
           <v-text-field
             label="Pozostałe przychody"
             suffix="zł"
-            v-model="form.income.other" />
-        </v-col>
-        <v-col md="3" sm="12">
-          <v-text-field
-            label="Suma przychodów"
-            :readonly="true"
-            suffix="zł"
-            v-model="form.income.sum" />
+            v-model.number="form.income.other" />
         </v-col>
       </v-row>
     </template>
@@ -157,7 +157,7 @@ const addTransaction = async () => {
           <v-text-field
             label="Koszty uzyskania przychodów"
             suffix="zł"
-            v-model="form.revenue.deductible" />
+            v-model.number="form.revenue.deductible" />
         </v-col>
         <v-col md="3" sm="12">
           <v-text-field
@@ -165,12 +165,12 @@ const addTransaction = async () => {
             hint="Koszty niestanowiące uzyskania przychodów"
             persistent-hint
             suffix="zł"
-            v-model="form.revenue.ineligible" />
+            v-model.number="form.revenue.ineligible" />
         </v-col>
       </v-row>
     </template>
 
-    <v-btn @click="addTransaction">Dodaj nową transakcję</v-btn>
+    <v-btn @click="addTransaction" class="mt-7" color="gray">Dodaj nową transakcję</v-btn>
 
   </v-form>
 </template>
