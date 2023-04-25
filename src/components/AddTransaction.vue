@@ -54,6 +54,19 @@ const addTransaction = async () => {
     }
   // }
 }
+
+let isContractorFetching = ref(false)
+const fetchContractorByNIP = async () => {
+  isContractorFetching.value = true
+
+  const query = await fetch(`http://localhost:3030/companyByNIP/${form.contractor.nip}`)
+  const response = await query.json()
+
+  if (response) {
+    form.contractor = response
+    isContractorFetching.value = false
+  }
+}
 </script>
 
 <template>
@@ -88,19 +101,21 @@ const addTransaction = async () => {
       <v-col md="3" sm="12">
         <v-text-field
           label="NIP kontrahenta"
+          :counter="10"
           v-model.number="form.contractor.nip" />
       </v-col>
 
       <v-btn 
-        @click="fetchCompanyByNIP"
-        variant="tonal"
-      >Uzupełnij dane po numerze NIP</v-btn>
+        @click="fetchContractorByNIP"
+        :loading="isContractorFetching"
+        variant="tonal">Uzupełnij automatycznie po numerze NIP</v-btn>
     </v-row>
 
     <v-row>
       <v-col md="12" sm="12">
         <v-text-field
           label="Nazwa kontrahenta"
+          :disabled="isContractorFetching"
           v-model="form.contractor.name" />
       </v-col>
     </v-row>
@@ -109,16 +124,19 @@ const addTransaction = async () => {
       <v-col md="6" sm="12">
         <v-text-field
           label="Ulica i numer lokalu"
+          :disabled="isContractorFetching"
           v-model="form.contractor.address" />
       </v-col>
       <v-col md="2" sm="12">
         <v-text-field
           label="Kod pocztowy"
+          :disabled="isContractorFetching"
           v-model="form.contractor.zipCode" />
       </v-col>
       <v-col md="4" sm="12">
         <v-text-field
           label="Miejscowość"
+          :disabled="isContractorFetching"
           v-model="form.contractor.location" />
       </v-col>
     </v-row>
