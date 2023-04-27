@@ -1,11 +1,11 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 import PrivacyPolicyDisclaimer from '@/components/PrivacyPolicyDisclaimer.vue'
 
 let tab = ref('Twoje dane')
-const viewTabItems = ['Twoje dane', 'Dane firmy']
+const viewTabItems = ['Twoje dane', 'Dane organizacji']
 
-const form = ref({
+const form = reactive({
   firstLastName: '',
   email: '',
   password: '',
@@ -22,6 +22,7 @@ const form = ref({
 
 let isRegisterButtonLoading = ref(false)
 let isAccountCreated = ref(false)
+let isOrganisationFetching = ref(false)
 
 const register = async () => {
   isRegisterButtonLoading.value = true
@@ -40,6 +41,27 @@ const register = async () => {
       isRegisterButtonLoading.value = false
       isAccountCreated.value = true
     }
+  }
+}
+const fetchContractorByNIP = async () => {
+  isOrganisationFetching.value = true
+
+  const query = await fetch(`http://localhost:3030/companyByNIP/${form.company.nip}`)
+  const response = await query.json()
+
+  if (response) {
+    const { nip, name, address, zipCode, location } = response
+    form.company = {
+      nip,
+      name,
+      address: {
+        street: address,
+        zipCode,
+        city: location
+      }
+    }
+
+    isOrganisationFetching.value = false
   }
 }
 </script>
@@ -132,40 +154,57 @@ const register = async () => {
                   <!-- NIP -->
                   <v-text-field
                     v-model="form.company.nip"
-                    label="Numer identyfikacji podatkowej (NIP)"
+                    label="Numer identyfikacji podatkowej"
                     placeholder="7311795229"
+                    :disabled="isOrganisationFetching"
+                    :counter="10"
                     required
                   ></v-text-field>
 
-                  <!-- Company name -->
+                  <v-btn 
+                    @click="fetchContractorByNIP"
+                    :loading="isOrganisationFetching"
+                    block
+                    class="mb-8 mt-1"
+                    variant="tonal">Uzupełnij automatycznie po NIP-ie</v-btn>
+
+                  <!-- NGO name -->
                   <v-text-field
                     v-model="form.company.name"
-                    label="Nazwa firmy"
-                    placeholder="Fundacja John Doe"
+                    :loading="isOrganisationFetching"
+                    :disabled="isOrganisationFetching"
+                    label="Nazwa organizacji"
+                    placeholder="Fundacja Rozwoju Cyfryzacji"
                     required
                   ></v-text-field>
 
                   <!-- Company address -->
                   <v-text-field
                     v-model="form.company.address.street"
+                    :loading="isOrganisationFetching"
+                    :disabled="isOrganisationFetching"
                     label="Adres"
-                    placeholder="al. Jerozolimskie 98"
+                    placeholder="ul. Piotrkowska 46/6u"
                     required
                   ></v-text-field>
 
                   <!-- Company postal code -->
                   <v-text-field
                     v-model="form.company.address.zipCode"
+                    :loading="isOrganisationFetching"
+                    :disabled="isOrganisationFetching"
                     label="Kod pocztowy"
-                    placeholder="00-321"
+                    placeholder="90-265"
                     required
                   ></v-text-field>
 
                   <!-- Company city -->
                   <v-text-field
                     v-model="form.company.address.city"
+                    :loading="isOrganisationFetching"
+                    :disabled="isOrganisationFetching"
                     label="Miejscowość"
-                    placeholder="Warszawa"
+                    placeholder="Łódź"
                     required
                   ></v-text-field>
 
@@ -174,7 +213,7 @@ const register = async () => {
                     block
                     color="primary"
                     :loading="isRegisterButtonLoading"
-                    :disabled="isAccountCreated"
+                    :disabled="isAccountCreated || isOrganisationFetching"
                     @click="register()"
                   >
                     Zarejestruj się
