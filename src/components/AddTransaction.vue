@@ -73,74 +73,85 @@ const fetchContractorByNIP = async () => {
   <v-form class="pa-5">
 
     <p class="font-weight-medium mb-4">Dane transakcji</p>
-      <v-radio-group inline v-model="form.isIncome">
-        <v-radio label="Przychód" :value="true" />
-        <v-radio label="Koszt" :value="false" />
-      </v-radio-group>
-
     <v-row>
-      <v-col md="3" sm="12">
+      <v-col md="4" sm="12">
+        <v-text-field
+          label="Numer dokumentu księgowego"
+          autofocus
+          v-model="form.invoiceNumber" />
+
         <v-text-field
           label="Data zdarzenia lub operacji"
           type="date"
           v-model="form.operationDate" />
+
+        <v-radio-group inline v-model="form.isIncome">
+          <v-radio label="Przychód" :value="true" class="mr-5"/>
+          <v-radio label="Koszt" :value="false" />
+        </v-radio-group>
       </v-col>
-      <v-col md="9" sm="12">
-        <v-text-field
-          label="Numer dokumentu księgowego"
-          v-model="form.invoiceNumber" />
+      <v-col md="8" sm="12">
+        <v-textarea
+          label="Opis transakcji"
+          clearable
+          no-resize
+          rows="2"
+          no-gutters
+          v-model="form.description" />
+
+        <v-file-input
+          show-size
+          counter
+          label="Wgraj dokument księgowy"
+          variant="outlined"
+        ></v-file-input>
       </v-col>
     </v-row>
-
-      <v-text-field
-        label="Opis transakcji"
-        v-model="form.description" />
 
     <p class="font-weight-medium mb-3 mt-6">Dane kontrahenta</p>
-    <v-row align="center">
-      <v-col md="3" sm="12">
-        <v-text-field
-          label="NIP kontrahenta"
-          :counter="10"
-          v-model.number="form.contractor.nip" />
-      </v-col>
-
-      <v-btn 
-        @click="fetchContractorByNIP"
-        :loading="isContractorFetching"
-        variant="tonal">Uzupełnij automatycznie po numerze NIP</v-btn>
-    </v-row>
-
     <v-row>
-      <v-col md="12" sm="12">
+      <v-col md="6" sm="12">
+        <div class="d-flex align-center">
+          <v-text-field
+            label="NIP kontrahenta"
+            v-model.number="form.contractor.nip" />
+
+          <v-btn 
+            @click="fetchContractorByNIP"
+            :loading="isContractorFetching"
+            variant="tonal"
+            class="ml-3 mb-6">Uzupełnij automatycznie po NIP-ie</v-btn>
+        </div>
+
         <v-text-field
           label="Nazwa kontrahenta"
           :disabled="isContractorFetching"
           v-model="form.contractor.name" />
       </v-col>
-    </v-row>
 
-    <v-row>
       <v-col md="6" sm="12">
         <v-text-field
           label="Ulica i numer lokalu"
           :disabled="isContractorFetching"
           v-model="form.contractor.address" />
-      </v-col>
-      <v-col md="2" sm="12">
-        <v-text-field
-          label="Kod pocztowy"
-          :disabled="isContractorFetching"
-          v-model="form.contractor.zipCode" />
-      </v-col>
-      <v-col md="4" sm="12">
-        <v-text-field
-          label="Miejscowość"
-          :disabled="isContractorFetching"
-          v-model="form.contractor.location" />
+          
+          <v-row>
+            <v-col md="6" sm="12">
+              <v-text-field
+                label="Kod pocztowy"
+                :disabled="isContractorFetching"
+                v-model="form.contractor.zipCode" />
+            </v-col>
+            <v-col md="6" sm="12">
+              <v-text-field
+                label="Miejscowość"
+                :disabled="isContractorFetching"
+                v-model="form.contractor.location" />
+            </v-col>
+          </v-row>
       </v-col>
     </v-row>
-    
+
     <template v-if="form.isIncome">
       <p class="font-weight-medium mb-3 mt-6">Przychody określone w art. 10a ust. 1 pkt 4 lit. a-d ustawy o działalności pożytku publicznego i o wolontariacie</p>
       <v-row>
