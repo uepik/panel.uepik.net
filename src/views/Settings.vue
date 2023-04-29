@@ -1,19 +1,69 @@
 <script setup>
-import { reactive } from 'vue'
+import { ref, reactive } from 'vue'
+import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import DashboardOverlay from '@/components/DashboardOverlay.vue'
 
+const router = useRouter()
 const store = useStore()
 
 const userForm = reactive({ ...store.getters.user })
 const companyForm = reactive({ ...store.getters.company })
+const isProfileButtonLoading = ref(false)
+const isOrganisationButtonLoading = ref(false)
+const isErrorVisible = ref(false)
+const uid = store.getters.user._id
 
-const userHandleSaveClick = () => {
-  console.log('user po zmianach:', userForm)
+const logoutWithAlert = () => {
+  store.dispatch('logout')
+    .then(() => router.push({
+      name: 'Login',
+      query: {
+        action: 'settings-was-changed'
+      }
+    }))
 }
 
-const companyHandleSaveClick = () => {
-  console.log('firma po zmianach:', companyForm)
+const userHandleSaveClick = async () => {
+  // Clone object without _id due to behavior of updateOne mongodb function
+  const userFormCopyWithoutID = { ...userForm }
+  delete userFormCopyWithoutID._id
+
+  isProfileButtonLoading.value = true
+  isErrorVisible.value = false
+
+    const query = await fetch(`http://localhost:3030/settings/${uid}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(userFormCopyWithoutID)
+    })
+
+    if (query.status === 200) {
+      isProfileButtonLoading.value = false
+      logoutWithAlert()
+    } else {
+      isErrorVisible.value = true
+      isProfileButtonLoading.value = false
+    }
+}
+
+const organisationHandleSaveClick = async () => {
+  isOrganisationButtonLoading.value = true
+  isErrorVisible.value = false
+
+    const query = await fetch(`http://localhost:3030/settings/${uid}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ company: companyForm })
+    })
+
+    if (query.status === 200) {
+      isOrganisationButtonLoading.value = false
+      logoutWithAlert()
+    } else {
+      isErrorVisible.value = true
+      isOrganisationButtonLoading.value = false
+    }
 }
 </script>
 
@@ -25,6 +75,15 @@ const companyHandleSaveClick = () => {
       </v-col>
     </v-row>
 
+    <v-alert
+      v-if="isErrorVisible"
+      type="error"
+      class="my-4"
+    >
+      Przepraszamy, wystąpił błąd przy zmianie ustawień.
+      Skontaktuj się z nami: <a href="mailto:uepik@frc.org.pl" class="text-white">uepik@frc.org.pl</a>.
+    </v-alert>
+
     <v-row>
       <v-col md="6" sm="12">
         <v-card>
@@ -33,27 +92,32 @@ const companyHandleSaveClick = () => {
             <!-- Name -->
             <v-text-field
               label="Imię i nazwisko"
+              :disabled="isProfileButtonLoading"
               v-model="userForm.firstLastName"
             />
             <!-- Email -->
             <v-text-field
               label="Adres e-mail"
+              :disabled="isProfileButtonLoading"
               v-model="userForm.email"
             />
             <!-- Photo URL -->
             <v-text-field
               label="Adres URL zdjęcia"
+              :disabled="isProfileButtonLoading"
               v-model="userForm.photo"
             />
             <!-- Mailing -->
             <v-checkbox
               :model-value="true"
+              :disabled="isProfileButtonLoading"
               label="Wyrażam zgodę na otrzymywanie drogą elektroniczną, na podany powyżej adres e-mail, informacji handlowych wysyłanych przez UEPiK.net z siedzibą w Łodzi, w imieniu własnym oraz na zlecenie innych osób."
             ></v-checkbox>
 
             <v-btn
               block
               @click="userHandleSaveClick"
+              :loading="isProfileButtonLoading"
             >Zapisz zmiany</v-btn>
           </v-card-text>
         </v-card>
@@ -61,22 +125,25 @@ const companyHandleSaveClick = () => {
 
       <v-col md="6" sm="12">
         <v-card>
-          <v-card-title>Ustawienia firmy</v-card-title>
+          <v-card-title>Ustawienia organizacji</v-card-title>
           <v-card-text>
             <!-- Company name -->
             <v-text-field
-              label="Nazwa"
+              label="Pełna nazwa"
               v-model="companyForm.name"
+              :disabled="isOrganisationButtonLoading"
             />
             <!-- NIP -->
             <v-text-field
-              label="NIP firmy"
+              label="Numer identyfikacji podatkowej"
               v-model="companyForm.nip"
+              :disabled="isOrganisationButtonLoading"
             />
             <!-- Address street -->
             <v-text-field
               label="Ulica i nr lokalu"
               v-model="companyForm.address.street"
+              :disabled="isOrganisationButtonLoading"
             />
             <v-row>
               <v-col md="6" sm="12">
@@ -84,6 +151,7 @@ const companyHandleSaveClick = () => {
                 <v-text-field
                   label="Kod pocztowy"
                   v-model="companyForm.address.zipCode"
+                  :disabled="isOrganisationButtonLoading"
                 />
               </v-col>
               <v-col md="6" sm="12">
@@ -91,13 +159,14 @@ const companyHandleSaveClick = () => {
                 <v-text-field
                   label="Miejscowość"
                   v-model="companyForm.address.city"
+                  :disabled="isOrganisationButtonLoading"
                 />
               </v-col>
             </v-row>
 
             <v-btn
               block
-              @click="companyHandleSaveClick"
+              @click="organisationHandleSaveClick"
             >Zapisz zmiany</v-btn>
           </v-card-text>
         </v-card>

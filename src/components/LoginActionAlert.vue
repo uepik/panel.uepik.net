@@ -16,6 +16,11 @@ const actionsArr = [
     query: 'invalid-auth-credentials',
     vAlertType: 'error',
     message: 'Podano błędny e-mail lub/i hasło.'
+  },
+  {
+    query: 'settings-was-changed',
+    vAlertType: 'info',
+    message: 'Zmieniono ustawienia konta. Zaloguj się ponownie.'
   }
 ]
 
