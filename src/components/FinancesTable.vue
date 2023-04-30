@@ -1,5 +1,6 @@
 <script setup>
 const props = defineProps(['transactions'])
+const emit = defineEmits(['delete'])
 
 const moneyFormatter = (value) => {
   const options = { style: 'currency', currency: 'PLN' }
@@ -66,9 +67,11 @@ const moneyFormatter = (value) => {
           </v-chip>
         </td>
         <td>
-          <v-icon>mdi-eye-outline</v-icon>
-          <v-icon class="mx-1">mdi-pencil-outline</v-icon>
-          <v-icon>mdi-delete-outline</v-icon>
+          <v-btn
+            density="compact"
+            icon="mdi-delete"
+            size="small"
+            @click="emit('delete', item._id)" />
         </td>
       </tr>
     </tbody>

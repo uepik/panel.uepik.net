@@ -7,11 +7,26 @@ import FinancesSummaryBox from '../components/FinancesSummaryBox.vue'
 import FinancesTable from '../components/FinancesTable.vue'
 
 const store = useStore()
+const uid = store.getters.user._id
 
 const transactions = reactive({ ...store.getters.transactions })
 const tab = ref('one')
 
 const checkIsAnyTransaction = () => Object.keys(transactions).length > 0
+
+const handleDeleteTransaction = async (id) => {
+  const deleteQuery = await fetch(`http://localhost:3030/transactions/${uid}/${id}`, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' }
+  })
+  
+  if (await deleteQuery.text()) {
+    console.log(`usunieto transakcje ${id}`)
+
+    // fetch all transactions to store
+    store.dispatch('getTransactions')
+  }
+}
 </script>
 
 <template>
@@ -48,11 +63,13 @@ const checkIsAnyTransaction = () => Object.keys(transactions).length > 0
             <v-card>
               <v-card-title @click="logTr">Zestawienie transakcji w 2023 r.</v-card-title>
               <v-card-text>
-                <FinancesTable
-                  v-if="checkIsAnyTransaction"
-                  :transactions="transactions"
-                />
-                <v-alert v-if="false" type="info">
+                <template v-if="checkIsAnyTransaction">
+                  <FinancesTable
+                    :transactions="transactions"
+                    @delete="handleDeleteTransaction"
+                  />
+                </template>
+                <v-alert v-if="!checkIsAnyTransaction" type="info">
                   Brak dodanych transakcji. Przejdź do zakładki <b>Nowa transakcja</b>, aby utworzyć pierwszą.
                 </v-alert>
               </v-card-text>
