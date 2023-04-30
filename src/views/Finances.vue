@@ -3,6 +3,7 @@ import DashboardOverlay from '@/components/DashboardOverlay.vue'
 import AddTransaction from '@/components/AddTransaction.vue'
 import { ref, reactive } from 'vue'
 import { useStore } from 'vuex'
+import FinancesSummaryBox from '../components/FinancesSummaryBox.vue';
 
 const store = useStore()
 
@@ -11,6 +12,12 @@ const tab = ref('one')
 const transactions = reactive({ ...store.getters.transactions })
 
 const moneyFormatter = (value) => value.toLocaleString('pl-PL', { style: 'currency', currency: 'PLN' });
+
+const summary = [
+  { type: 'Przychody', value: 3000 },
+  { type: 'Koszty', value: 3000 },
+  { type: 'Zysk/strata', value: 3000 }
+]
 </script>
 
 <template>
@@ -38,6 +45,14 @@ const moneyFormatter = (value) => value.toLocaleString('pl-PL', { style: 'curren
 
         <v-window v-model="tab">
           <v-window-item value="summary">
+            <v-row>
+              <FinancesSummaryBox
+                v-for="(item, i) in summary" :key="i"
+                :type="item.type"
+                :value="item.value"
+              />
+            </v-row>
+
             <v-card>
               <v-card-title>Zestawienie transakcji w 2023 r.</v-card-title>
               <v-card-text>
