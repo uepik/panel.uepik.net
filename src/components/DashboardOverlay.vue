@@ -9,8 +9,7 @@ const navigation = [
   {
     name: 'Aplikacja',
     items: [
-      { icon: 'mdi-chart-box', title: 'Podsumowanie', routing: '/' },
-      { icon: 'mdi-plus-minus-variant', title: 'Finanse', routing: '/finances' },
+      { icon: 'mdi-plus-minus-variant', title: 'Finanse', routing: '/' },
       { icon: 'mdi-clipboard-account', title: 'Zatrudnienie', routing: '/employment' },
       { icon: 'mdi-folder-text', title: 'Środki trwałe', routing: '/fixedAssets' },
       { icon: 'mdi-download-box', title: 'Raporty', routing: '/reports' }

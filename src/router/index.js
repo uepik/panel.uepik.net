@@ -1,6 +1,5 @@
 import { createWebHistory, createRouter } from 'vue-router'
 import store from '@/store'
-import Dashboard from '@/views/Dashboard.vue'
 import Register from '@/views/Register.vue'
 import Login from '@/views/Login.vue'
 import Logout from '@/views/Logout.vue'
@@ -10,8 +9,8 @@ import Finances from '@/views/Finances.vue'
 const routes = [
   {
     path: '/',
-    name: 'Dashboard',
-    component: Dashboard,
+    name: 'Finances',
+    component: Finances,
     meta: {
       requiresAuth: true
     }
@@ -44,14 +43,6 @@ const routes = [
     path: '/settings',
     name: 'Settings',
     component: Settings,
-    meta: {
-      requiresAuth: true
-    }
-  },
-  {
-    path: '/finances',
-    name: 'Finances',
-    component: Finances,
     meta: {
       requiresAuth: true
     }
