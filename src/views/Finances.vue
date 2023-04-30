@@ -3,21 +3,15 @@ import DashboardOverlay from '@/components/DashboardOverlay.vue'
 import AddTransaction from '@/components/AddTransaction.vue'
 import { ref, reactive } from 'vue'
 import { useStore } from 'vuex'
-import FinancesSummaryBox from '../components/FinancesSummaryBox.vue';
+import FinancesSummaryBox from '../components/FinancesSummaryBox.vue'
+import FinancesTable from '../components/FinancesTable.vue'
 
 const store = useStore()
 
+const transactions = reactive({ ...store.getters.transactions })
 const tab = ref('one')
 
-const transactions = reactive({ ...store.getters.transactions })
-
-const moneyFormatter = (value) => value.toLocaleString('pl-PL', { style: 'currency', currency: 'PLN' });
-
-const summary = [
-  { type: 'Przychody', value: 3000 },
-  { type: 'Koszty', value: 3000 },
-  { type: 'Zysk/strata', value: 3000 }
-]
+const checkIsAnyTransaction = () => Object.keys(transactions).length > 0
 </script>
 
 <template>
@@ -45,78 +39,22 @@ const summary = [
 
         <v-window v-model="tab">
           <v-window-item value="summary">
-            <v-row>
-              <FinancesSummaryBox
-                v-for="(item, i) in summary" :key="i"
-                :type="item.type"
-                :value="item.value"
-              />
+            <v-row v-if="checkIsAnyTransaction">
+              <FinancesSummaryBox type="income" :transactionsArr="Object.values(transactions)" />
+              <FinancesSummaryBox type="revenue" :transactionsArr="Object.values(transactions)" />
+              <FinancesSummaryBox type="balance" :transactionsArr="Object.values(transactions)" />
             </v-row>
 
             <v-card>
-              <v-card-title>Zestawienie transakcji w 2023 r.</v-card-title>
+              <v-card-title @click="logTr">Zestawienie transakcji w 2023 r.</v-card-title>
               <v-card-text>
-                <v-table density="compact">
-                  <thead>
-                    <tr>
-                      <th class="text-left">
-                        L.p.
-                      </th>
-                      <th class="text-left">
-                        Rodzaj
-                      </th>
-                      <th class="text-left">
-                        Data
-                      </th>
-                      <th class="text-left">
-                        Kwota
-                      </th>
-                      <th class="text-left">
-                        Kontrahent
-                      </th>
-                      <th class="text-left">
-                        Podgląd dokumentu
-                      </th>
-                      <th class="text-left">
-                        Akcje
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr
-                      v-for="item in transactions"
-                      :key="item._id"
-                    >
-                      <td>lp</td>
-                      <td>
-                        <v-chip
-                          size="x-small" variant="elevated"
-                          :color="item.isIncome ? 'green-lighten-1' : 'red-lighten-1'"
-                        >
-                          <v-icon>{{ item.isIncome ? 'mdi-plus' : 'mdi-minus' }}</v-icon>
-                          {{ item.isIncome ? 'Przychód' : 'Koszt' }}
-                        </v-chip>
-      
-                      </td>
-                      <td>{{ new Date(item.createdAt).toLocaleDateString() }}</td>
-                      <td>
-                        {{ item.isIncome ? moneyFormatter(item.income.sum) : `-${ moneyFormatter(item.revenue.deductible + item.revenue.ineligible) }` }}
-                      </td>
-                      <td><v-chip size="small" link>{{ item.contractor.name }}</v-chip></td>
-                      <td>
-                        <v-chip size="x-small" link>
-                          <v-icon class="mr-2">mdi-eye-outline</v-icon>
-                          {{ item.invoiceNumber }}
-                        </v-chip>
-                      </td>
-                      <td>
-                        <v-icon>mdi-eye-outline</v-icon>
-                        <v-icon class="mx-1">mdi-pencil-outline</v-icon>
-                        <v-icon>mdi-delete-outline</v-icon>
-                      </td>
-                    </tr>
-                  </tbody>
-                </v-table>
+                <FinancesTable
+                  v-if="checkIsAnyTransaction"
+                  :transactions="transactions"
+                />
+                <v-alert v-if="false" type="info">
+                  Brak dodanych transakcji. Przejdź do zakładki <b>Nowa transakcja</b>, aby utworzyć pierwszą.
+                </v-alert>
               </v-card-text>
             </v-card>
           </v-window-item>
