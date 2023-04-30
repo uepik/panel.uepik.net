@@ -1,6 +1,7 @@
 <script setup>
 const props = defineProps(['transactions'])
 const emit = defineEmits(['delete'])
+import isIncome from '@/helpers/isIncome'
 
 const moneyFormatter = (value) => {
   const options = { style: 'currency', currency: 'PLN' }
@@ -44,16 +45,16 @@ const moneyFormatter = (value) => {
         <td>
           <v-chip
             size="x-small" variant="elevated"
-            :color="item.isIncome ? 'green-lighten-1' : 'red-lighten-1'"
+            :color="isIncome(item.category) ? 'green-lighten-1' : 'red-lighten-1'"
           >
-            <v-icon>{{ item.isIncome ? 'mdi-plus' : 'mdi-minus' }}</v-icon>
-            {{ item.isIncome ? 'Przychód' : 'Koszt' }}
+            <v-icon>{{ isIncome(item.category) ? 'mdi-plus' : 'mdi-minus' }}</v-icon>
+            {{ isIncome(item.category) ? 'Przychód' : 'Koszt' }}
           </v-chip>
 
         </td>
         <td>{{ new Date(item.createdAt).toLocaleDateString() }}</td>
         <td>
-          {{ item.isIncome ? moneyFormatter(item.income.sum) : `-${ moneyFormatter(item.revenue.deductible + item.revenue.ineligible) }` }}
+          {{ isIncome(item.category) ? moneyFormatter(item.value) : `-${ moneyFormatter(item.value) }` }}
         </td>
         <td>
           <v-chip size="small" link>

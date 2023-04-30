@@ -7,26 +7,26 @@ const store = useStore()
 const isDialogOpen = ref(false)
 const tab = ref(null)
 
+const items = [
+  { title: 'Przychody z działalności nieodpłatnej pożytku publicznego', type: 'income_charity' },
+  { title: 'Przychody z działalności odpłatnej pożytku publicznego z tytułu sprzedaży towarów i usług', type: 'income_noCharity' },
+  { title: 'Pozostałe przychody', type: 'income_other' },
+  { title: 'Koszty uzyskania przychodów', type: 'revenue_deductible' },
+  { title: 'Koszty niestanowiące uzyskania przychodów', type: 'revenue_ineligible' },
+]
+
 const form = reactive({
   invoiceNumber: '',
   operationDate: '',
   description: '',
-  isIncome: null,
+  category: undefined,
+  value: undefined,
   contractor: {
     nip: '',
     name: '',
     address: '',
     zipCode: '',
     location: ''
-  },
-  income: {
-    charity: 0,
-    noCharity: 0,
-    other: 0
-  },
-  revenue: {
-    deductible: 0,
-    ineligible: 0
   }
 })
 
@@ -84,11 +84,6 @@ const fetchContractorByNIP = async () => {
           label="Data zdarzenia lub operacji"
           type="date"
           v-model="form.operationDate" />
-
-        <v-radio-group inline v-model="form.isIncome">
-          <v-radio label="Przychód" :value="true" class="mr-5"/>
-          <v-radio label="Koszt" :value="false" />
-        </v-radio-group>
       </v-col>
       <v-col md="8" sm="12">
         <v-textarea
@@ -152,52 +147,25 @@ const fetchContractorByNIP = async () => {
       </v-col>
     </v-row>
 
-    <template v-if="form.isIncome">
-      <p class="font-weight-medium mb-3 mt-6">Przychody określone w art. 10a ust. 1 pkt 4 lit. a-d ustawy o działalności pożytku publicznego i o wolontariacie</p>
-      <v-row>
-        <v-col md="4" sm="12">
-          <v-text-field
-            label="Działalność nieodpłatna"
-            hint="Przychody z działalności nieodpłatnej pożytku publicznego"
-            persistent-hint
-            suffix="zł"
-            v-model.number="form.income.charity" />
-        </v-col>
-        <v-col md="4" sm="12">
-          <v-text-field
-            label="Działalność odpłatna"
-            hint="Przychody z działalności odpłatnej pożytku publicznego z tytułu sprzedaży towarów i usług"
-            persistent-hint
-            suffix="zł"
-            v-model.number="form.income.noCharity" />
-        </v-col>
-        <v-col md="4" sm="12">
-          <v-text-field
-            label="Pozostałe przychody"
-            suffix="zł"
-            v-model.number="form.income.other" />
-        </v-col>
-      </v-row>
-    </template>
-    <template v-if="form.isIncome === false">
-      <p class="font-weight-medium mb-3 mt-6">Koszty</p>
-      <v-row>
-        <v-col md="3" sm="12">
-          <v-text-field
-            label="Koszty uzyskania przychodów"
-            suffix="zł"
-            v-model.number="form.revenue.deductible" />
-        </v-col>
-        <v-col md="3" sm="12">
-          <v-text-field
-            label="Koszty niekwalifikowane"
-            hint="Koszty niestanowiące uzyskania przychodów"
-            persistent-hint
-            suffix="zł"
-            v-model.number="form.revenue.ineligible" />
-        </v-col>
-      </v-row>
-    </template>
+    <p class="font-weight-medium mb-3 mt-6">Wartość</p>
+    <v-row>
+      <v-col md="5" sm="12">
+        <v-select
+          v-model="form.category"
+          label="Kategoria transakcji"
+          item-title="title"
+          item-value="type"
+          :items="items"
+        ></v-select>
+      </v-col>
+
+      <v-col md="3" sm="12">
+        <v-text-field
+          label="Kwota transakcji"
+          suffix="zł"
+          v-model.number="form.value" />
+      </v-col>
+    </v-row>
 
     <v-btn @click="addTransaction" class="mt-7" color="gray">Dodaj nową transakcję</v-btn>
 

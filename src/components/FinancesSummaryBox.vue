@@ -2,21 +2,16 @@
 const props = defineProps(['type', 'transactionsArr'])
 import currencyFormat from '@/helpers/currencyFormat'
 
-const getSumByTransactionType = (arr, isTransactionIncome) => {
-  console.log(arr)
-  const filteredArr = arr.filter(transaction => transaction.isIncome === isTransactionIncome)
+const getSumByTransactionType = (type) => {
+  const arr = props.transactionsArr
+
+  const filteredArr = arr.filter(transaction => transaction.category.includes(type))
   
   if (filteredArr.length > 1) {
-    if (isTransactionIncome === true) {
-      return filteredArr.reduce((previous, next) => previous.income.sum + next.income.sum)
-    }
-    
-    if (isTransactionIncome === false) {
-      return filteredArr.reduce((previous, next) => previous.revenue.sum + next.revenue.sum)
-    }
+    return filteredArr.reduce((previous, next) => previous.value + next.value)
   }
   else if (filteredArr.length === 1) {
-    return isTransactionIncome === true ? filteredArr[0].income.sum : filteredArr[0].revenue.sum
+    return filteredArr[0].value
   }
   else {
     return 0
@@ -27,17 +22,17 @@ const summary = [
   {
     type: 'income',
     title: 'Przychody',
-    value: getSumByTransactionType(props.transactionsArr, true)
+    value: getSumByTransactionType('income')
   },
   {
     type: 'revenue',
     title: 'Koszty',
-    value: getSumByTransactionType(props.transactionsArr, false)
+    value: getSumByTransactionType('revenue')
   },
   {
     type: 'balance',
     title: 'Zysk (strata)',
-    value: getSumByTransactionType(props.transactionsArr, true) - getSumByTransactionType(props.transactionsArr, false)
+    value: getSumByTransactionType('income') - getSumByTransactionType('revenue')
   }
 ]
 </script>
