@@ -70,7 +70,10 @@ body,
   letter-spacing: 0 !important;
 }
 
-input, textarea, .v-select__selection {
+input,
+textarea,
+.v-select__selection,
+.v-alert__content {
   font-size: 14px !important;
   font-weight: 500 !important;
 }
@@ -78,11 +81,6 @@ input, textarea, .v-select__selection {
 .text-caption,
 .v-list-subheader__text {
   letter-spacing: 0 !important;
-  font-weight: 500 !important;
-}
-
-.v-alert__content {
-  font-size: 14px !important;
   font-weight: 500 !important;
 }
 
