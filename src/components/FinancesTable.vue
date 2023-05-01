@@ -13,27 +13,13 @@ const moneyFormatter = (value) => {
   <v-table density="compact">
     <thead>
       <tr>
-        <th class="text-left">
-          L.p.
-        </th>
-        <th class="text-left">
-          Rodzaj
-        </th>
-        <th class="text-left">
-          Data
-        </th>
-        <th class="text-left">
-          Kwota
-        </th>
-        <th class="text-left">
-          Kontrahent
-        </th>
-        <th class="text-left">
-          Podgląd dokumentu
-        </th>
-        <th class="text-left">
-          Akcje
-        </th>
+        <th class="text-left">L.p.</th>
+        <th class="text-left">Rodzaj</th>
+        <th class="text-left">Data operacji</th>
+        <th class="text-left">Kwota</th>
+        <th class="text-left">Kontrahent</th>
+        <th class="text-left">Podgląd dokumentu</th>
+        <th class="text-left">Akcje</th>
       </tr>
     </thead>
     <tbody>
@@ -52,7 +38,7 @@ const moneyFormatter = (value) => {
           </v-chip>
 
         </td>
-        <td>{{ new Date(item.createdAt).toLocaleDateString() }}</td>
+        <td>{{ new Date(item.operationDate).toLocaleDateString() }}</td>
         <td>
           {{ isIncome(item.category) ? moneyFormatter(item.value) : `-${ moneyFormatter(item.value) }` }}
         </td>

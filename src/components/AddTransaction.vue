@@ -4,7 +4,6 @@ import { useStore } from 'vuex'
 
 const store = useStore()
 
-const isDialogOpen = ref(false)
 const tab = ref(null)
 
 const items = [
@@ -17,7 +16,7 @@ const items = [
 
 const form = reactive({
   invoiceNumber: '',
-  operationDate: '',
+  operationDate: undefined,
   description: '',
   category: undefined,
   value: undefined,
@@ -81,7 +80,7 @@ const fetchContractorByNIP = async () => {
           v-model="form.invoiceNumber" />
 
         <v-text-field
-          label="Data zdarzenia lub operacji"
+          label="Data operacji"
           type="date"
           v-model="form.operationDate" />
       </v-col>
