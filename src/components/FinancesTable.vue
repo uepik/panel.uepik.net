@@ -38,10 +38,10 @@ const moneyFormatter = (value) => {
     </thead>
     <tbody>
       <tr
-        v-for="item in props.transactions"
+        v-for="(item, i) in props.transactions"
         :key="item._id"
       >
-        <td>lp</td>
+        <td>{{ Object.keys(props.transactions).length - i }}</td>
         <td>
           <v-chip
             size="x-small" variant="elevated"
