@@ -50,9 +50,7 @@ const addTransaction = async () => {
 
       // fetch all transactions to store
       store.dispatch('getTransactions')
-
-      // emit to redirect to the Summary tab
-      emit('added')
+        .then(() => emit('added'))
     }
   // }
 }

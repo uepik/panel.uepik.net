@@ -7,11 +7,11 @@ import FinancesSummary from '../components/FinancesSummary.vue'
 import FinancesTable from '../components/FinancesTable.vue'
 
 const store = useStore()
-// const emit = defineEmits(['whenAdded'])
 const uid = store.getters.user._id
 
 const transactions = computed(() => store.getters.transactions)
 const tab = ref('summary')
+const isAddConfirmationVisible = ref(false)
 
 const checkIsAnyTransaction = () => Object.keys(transactions).length > 0
 
@@ -26,6 +26,12 @@ const handleDeleteTransaction = async (id) => {
     store.dispatch('getTransactions')
     tab.value = 'summary'
   }
+}
+
+const handleAddedTransaction = () => {
+  isAddConfirmationVisible.value = true
+  tab.value = 'summary'
+  window.scrollTo(0, 0)
 }
 </script>
 
@@ -58,6 +64,16 @@ const handleDeleteTransaction = async (id) => {
               <FinancesSummary :transactions="transactions"/>
             </v-row>
 
+            <v-alert
+              v-if="isAddConfirmationVisible"
+              type="success"
+              closable
+              close-label="Zamknij informację"
+              class="mb-4"
+            >
+              Dodano nową transakcję.
+            </v-alert>
+
             <v-card>
               <v-card-title>Zestawienie transakcji w 2023 r.</v-card-title>
               <v-card-text>
@@ -79,7 +95,7 @@ const handleDeleteTransaction = async (id) => {
               <v-card-title>Nowa transakcja</v-card-title>
               <v-card-text>
                 <AddTransaction
-                  @added="() => tab = 'summary'" />
+                  @added="handleAddedTransaction" />
               </v-card-text>
             </v-card>
             
