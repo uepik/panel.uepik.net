@@ -11,11 +11,28 @@ const uid = store.getters.user._id
 
 const transactions = computed(() => store.getters.transactions)
 const tab = ref('summary')
-const isAddConfirmationVisible = ref(false)
+const alert = ref({
+  isVisible: false,
+  type: undefined,
+  message: undefined
+})
+
+const showAlert = (type, message) => {
+  alert.value = {
+    isVisible: true,
+    type,
+    message
+  }
+
+  setTimeout(() => {
+    alert.value.isVisible = false
+  }, 5000);
+}
 
 const checkIsAnyTransaction = () => Object.keys(transactions).length > 0
 
 const handleDeleteTransaction = async (id) => {
+  showAlert('info', 'Poprawnie usunięto transakcję.')
   const isConfirmed = confirm('Czy na pewno chcesz usunąć tę transakcję?')
 
   if (isConfirmed) {
@@ -27,13 +44,13 @@ const handleDeleteTransaction = async (id) => {
     if (await deleteQuery.text()) {
       // fetch all transactions to store
       store.dispatch('getTransactions')
-      tab.value = 'summary'
+      showAlert('info', 'Poprawnie usunięto transakcję.')
     }
   }
 }
 
 const handleAddedTransaction = () => {
-  isAddConfirmationVisible.value = true
+  showAlert('success', 'Dodano nową transakcję.')
   tab.value = 'summary'
   window.scrollTo(0, 0)
 }
@@ -69,14 +86,11 @@ const handleAddedTransaction = () => {
             </v-row>
 
             <v-alert
-              v-if="isAddConfirmationVisible"
-              type="success"
-              closable
-              close-label="Zamknij informację"
+              v-if="alert.isVisible"
+              :type="alert.type"
+              :text="alert.message"
               class="mb-4"
-            >
-              Dodano nową transakcję.
-            </v-alert>
+            />
 
             <v-card>
               <v-card-title>Zestawienie transakcji w 2023 r.</v-card-title>
