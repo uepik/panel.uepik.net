@@ -16,15 +16,19 @@ const isAddConfirmationVisible = ref(false)
 const checkIsAnyTransaction = () => Object.keys(transactions).length > 0
 
 const handleDeleteTransaction = async (id) => {
-  const deleteQuery = await fetch(`http://localhost:3030/transactions/${uid}/${id}`, {
-    method: 'DELETE',
-    headers: { 'Content-Type': 'application/json' }
-  })
+  const isConfirmed = confirm('Czy na pewno chcesz usunąć tę transakcję?')
 
-  if (await deleteQuery.text()) {
-    // fetch all transactions to store
-    store.dispatch('getTransactions')
-    tab.value = 'summary'
+  if (isConfirmed) {
+    const deleteQuery = await fetch(`http://localhost:3030/transactions/${uid}/${id}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' }
+    })
+
+    if (await deleteQuery.text()) {
+      // fetch all transactions to store
+      store.dispatch('getTransactions')
+      tab.value = 'summary'
+    }
   }
 }
 
