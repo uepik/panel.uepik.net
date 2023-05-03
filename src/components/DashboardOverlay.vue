@@ -35,7 +35,13 @@ const company = reactive({ ...store.getters.company })
   <v-app id="inspire">
     <template v-if="user.isAuth">
       <!-- navigation -->
-      <v-navigation-drawer app permanent disable-resize-watcher border="0">
+      <v-navigation-drawer
+        app
+        permanent
+        disable-resize-watcher
+        border="0"
+        fixed
+      >
         <template v-slot:prepend>
           <v-list-item-media class="py-5 text-center">
             <img src="/uepik_logo.svg" height="30">

@@ -1,16 +1,17 @@
 <script setup >
 import DashboardOverlay from '@/components/DashboardOverlay.vue'
 import AddTransaction from '@/components/AddTransaction.vue'
-import { ref, reactive } from 'vue'
+import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
-import FinancesSummaryBox from '../components/FinancesSummaryBox.vue'
+import FinancesSummary from '../components/FinancesSummary.vue'
 import FinancesTable from '../components/FinancesTable.vue'
 
 const store = useStore()
+// const emit = defineEmits(['whenAdded'])
 const uid = store.getters.user._id
 
-const transactions = reactive({ ...store.getters.transactions })
-const tab = ref('one')
+const transactions = computed(() => store.getters.transactions)
+const tab = ref('summary')
 
 const checkIsAnyTransaction = () => Object.keys(transactions).length > 0
 
@@ -19,12 +20,11 @@ const handleDeleteTransaction = async (id) => {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json' }
   })
-  
-  if (await deleteQuery.text()) {
-    console.log(`usunieto transakcje ${id}`)
 
+  if (await deleteQuery.text()) {
     // fetch all transactions to store
     store.dispatch('getTransactions')
+    tab.value = 'summary'
   }
 }
 </script>
@@ -55,13 +55,11 @@ const handleDeleteTransaction = async (id) => {
         <v-window v-model="tab">
           <v-window-item value="summary">
             <v-row v-if="checkIsAnyTransaction">
-              <FinancesSummaryBox type="income" :transactionsArr="Object.values(transactions)" />
-              <FinancesSummaryBox type="revenue" :transactionsArr="Object.values(transactions)" />
-              <FinancesSummaryBox type="balance" :transactionsArr="Object.values(transactions)" />
+              <FinancesSummary :transactions="transactions"/>
             </v-row>
 
             <v-card>
-              <v-card-title @click="logTr">Zestawienie transakcji w 2023 r.</v-card-title>
+              <v-card-title>Zestawienie transakcji w 2023 r.</v-card-title>
               <v-card-text>
                 <template v-if="checkIsAnyTransaction">
                   <FinancesTable
@@ -80,7 +78,8 @@ const handleDeleteTransaction = async (id) => {
             <v-card>
               <v-card-title>Nowa transakcja</v-card-title>
               <v-card-text>
-                <AddTransaction />
+                <AddTransaction
+                  @added="() => tab = 'summary'" />
               </v-card-text>
             </v-card>
             
@@ -96,11 +95,12 @@ const handleDeleteTransaction = async (id) => {
                     Provident nemo voluptatibus praesentium expedita molestias.
                     Magnam obcaecati quidem, necessitatibus sint nulla quae
                     mollitia nam maiores. Vel quam vero totam accusamus labore.
-
-                    <v-btn
-                      block
-                    >Eksportuj</v-btn>
                   </v-card-text>
+                  <v-card-actions>
+                    <v-btn block>
+                      Eksportuj
+                    </v-btn>
+                  </v-card-actions>
                 </v-card>
               </v-col>
             </v-row>

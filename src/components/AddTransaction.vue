@@ -1,9 +1,9 @@
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, defineEmits } from 'vue'
 import { useStore } from 'vuex'
 
 const store = useStore()
-
+const emit = defineEmits(['added'])
 const tab = ref(null)
 
 const items = [
@@ -46,10 +46,13 @@ const addTransaction = async () => {
     if (await createUserQuery.json()) {
       // isRegisterButtonLoading.value = false
       // isAccountCreated.value = true
-      alert('dodano')
+      // alert('dodano')
 
       // fetch all transactions to store
       store.dispatch('getTransactions')
+
+      // emit to redirect to the Summary tab
+      emit('added')
     }
   // }
 }
