@@ -4,14 +4,30 @@ import { useStore } from 'vuex'
 
 const store = useStore()
 const emit = defineEmits(['added'])
-const tab = ref(null)
+const isAddButtonLoading = ref(false)
+const isContractorFetching = ref(false)
 
 const items = [
-  { title: 'Przychody z działalności nieodpłatnej pożytku publicznego', type: 'income_charity' },
-  { title: 'Przychody z działalności odpłatnej pożytku publicznego z tytułu sprzedaży towarów i usług', type: 'income_noCharity' },
-  { title: 'Pozostałe przychody', type: 'income_other' },
-  { title: 'Koszty uzyskania przychodów', type: 'revenue_deductible' },
-  { title: 'Koszty niestanowiące uzyskania przychodów', type: 'revenue_ineligible' },
+  {
+    title: 'Przychody z działalności nieodpłatnej pożytku publicznego',
+    type: 'income_charity'
+  },
+  {
+    title: 'Przychody z działalności odpłatnej pożytku publicznego z tytułu sprzedaży towarów i usług',
+    type: 'income_noCharity'
+  },
+  {
+    title: 'Pozostałe przychody',
+    type: 'income_other'
+  },
+  {
+    title: 'Koszty uzyskania przychodów',
+    type: 'revenue_deductible'
+  },
+  {
+    title: 'Koszty niestanowiące uzyskania przychodów',
+    type: 'revenue_ineligible'
+  }
 ]
 
 const form = reactive({
@@ -30,32 +46,26 @@ const form = reactive({
 })
 
 const addTransaction = async () => {
-  // isRegisterButtonLoading.value = true
+  isAddButtonLoading.value = true
 
-  // if (!isAccountCreated.value) { // allow 1 register in session, needs improve on backend
-    const createUserQuery = await fetch('http://localhost:3030/transactions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ...form,
-        createdAt: Date.now(),
-        uid: store.getters.user._id
-      }),
-    })
-    
-    if (await createUserQuery.json()) {
-      // isRegisterButtonLoading.value = false
-      // isAccountCreated.value = true
-      // alert('dodano')
+  const query = await fetch('http://localhost:3030/transactions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      ...form,
+      createdAt: Date.now(),
+      uid: store.getters.user._id
+    }),
+  })
 
-      // fetch all transactions to store
-      store.dispatch('getTransactions')
-        .then(() => emit('added'))
-    }
-  // }
+  if (await query.json()) {
+    isAddButtonLoading.value = false
+
+    store.dispatch('getTransactions')
+      .then(() => emit('added'))
+  }
 }
 
-let isContractorFetching = ref(false)
 const fetchContractorByNIP = async () => {
   isContractorFetching.value = true
 
@@ -167,7 +177,12 @@ const fetchContractorByNIP = async () => {
       </v-col>
     </v-row>
 
-    <v-btn @click="addTransaction" class="mt-7" color="gray">Dodaj nową transakcję</v-btn>
+    <v-btn
+      @click="addTransaction"
+      class="mt-7"
+      color="gray"
+      :loading="isAddButtonLoading"
+    >Dodaj nową transakcję</v-btn>
 
   </v-form>
 </template>
