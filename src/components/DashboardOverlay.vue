@@ -1,6 +1,5 @@
 <script setup >
 import { ref, reactive } from 'vue'
-import BugReportButton from '@/components/BugReportButton.vue'
 import { useStore } from 'vuex'
 
 const store = useStore()
@@ -81,9 +80,12 @@ const company = reactive({ ...store.getters.company })
         <!-- Bottom buttons -->
         <template v-slot:append>
           <div class="pa-2">
-            <BugReportButton />
-
-            <v-btn block class="mt-1" variant="tonal" to="/logout">
+            <v-btn
+              block
+              class="mt-1"
+              variant="tonal"
+              to="/logout"
+            >
               Wyloguj się
             </v-btn>
           </div>
