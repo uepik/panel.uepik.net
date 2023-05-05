@@ -8,6 +8,9 @@ import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
 import '@/assets/styles.scss'
 
+// Polish translation
+import { pl } from 'vuetify/locale'
+
 // UEPiK theme
 const customLightTheme = {
   dark: false,
@@ -27,6 +30,11 @@ const customLightTheme = {
 }
 
 export default createVuetify({
+  locale: {
+    locale: 'pl',
+    fallback: 'pl',
+    messages: { pl }
+  },
   theme: {
     defaultTheme: 'customLightTheme',
     themes: {
