@@ -1,68 +1,80 @@
 <script setup>
 const props = defineProps(['transactions'])
 const emit = defineEmits(['delete'])
+import { VDataTable } from 'vuetify/labs/VDataTable'
 import isIncome from '@/helpers/isIncome'
+import currencyFormat from '@/helpers/currencyFormat'
 
-const moneyFormatter = (value) => {
-  const options = { style: 'currency', currency: 'PLN' }
-  return value.toLocaleString('pl-PL', options)
+const headers = [
+  { title: 'L.p.', align: 'start', key: 'no', sortable: false },
+  { title: 'Rodzaj', key: 'category' },
+  { title: 'Data operacji', key: 'operationDate' },
+  { title: 'Kwota', key: 'value' },
+  { title: 'Kontrahent', key: 'contractor.name' },
+  { title: 'Podgląd dokumentu', key: 'invoiceNumber', sortable: false },
+  { title: 'Akcje', key: 'actions', sortable: false },
+]
+
+const getChipValues = (category) => {
+  if (isIncome(category)) return { color: 'green-lighten-1', icon: 'mdi-plus', title: 'Przychód' }
+  else return { color: 'red-lighten-1', icon: 'mdi-minus', title: 'Koszt' }
 }
 </script>
 
 <template>
-  <v-table density="compact">
-    <thead>
-      <tr>
-        <th class="text-left">L.p.</th>
-        <th class="text-left">Rodzaj</th>
-        <th class="text-left">Data operacji</th>
-        <th class="text-left">Kwota</th>
-        <th class="text-left">Kontrahent</th>
-        <th class="text-left">Podgląd dokumentu</th>
-        <th class="text-left">Akcje</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        v-for="(item, i) in props.transactions"
-        :key="item._id"
-      >
-        <td>{{ Object.keys(props.transactions).length - i }}</td>
-        <td>
-          <v-chip
-            size="x-small" variant="elevated"
-            :color="isIncome(item.category) ? 'green-lighten-1' : 'red-lighten-1'"
-          >
-            <v-icon>{{ isIncome(item.category) ? 'mdi-plus' : 'mdi-minus' }}</v-icon>
-            {{ isIncome(item.category) ? 'Przychód' : 'Koszt' }}
-          </v-chip>
+  <v-data-table
+    :headers="headers"
+    :items="props.transactions"
+    :items-length="props.transactions.length"
+    density="comfortable"
+  >
+    <template v-slot:item.no="{ item }">
+      {{ Object.keys(props.transactions).length - props.transactions.indexOf(item.raw) }}
+    </template>
 
-        </td>
-        <td>{{ new Date(item.operationDate).toLocaleDateString() }}</td>
-        <td>
-          {{ isIncome(item.category) ? moneyFormatter(item.value) : `-${ moneyFormatter(item.value) }` }}
-        </td>
-        <td>
-          <v-chip size="small" link>
-            <span class="chip__wrapped">{{ item.contractor.name }}</span>
-          </v-chip>
-        </td>
-        <td>
-          <v-chip size="x-small" link>
-            <v-icon class="mr-2">mdi-eye-outline</v-icon>
-            {{ item.invoiceNumber }}
-          </v-chip>
-        </td>
-        <td>
-          <v-btn
-            density="compact"
-            icon="mdi-delete"
-            size="small"
-            @click="emit('delete', item._id)" />
-        </td>
-      </tr>
-    </tbody>
-  </v-table>
+    <template v-slot:item.category="{ item }">
+      <v-chip
+        :set="chip = getChipValues(item.raw.category)"
+        size="x-small" variant="elevated"
+        :color="chip.color"
+      >
+        <v-icon>{{ chip.icon }}</v-icon>
+        {{ chip.title }}
+      </v-chip>
+    </template>
+
+    <template v-slot:item.value="{ item }">
+      {{ currencyFormat(item.raw.value) }}
+    </template>
+
+    <template v-slot:item.contractor.name="{ item }">
+      <v-chip size="small" link>
+        <span class="chip__wrapped">
+          {{ item.raw.contractor.name }}
+        </span>
+
+        <v-tooltip
+          activator="parent"
+          location="top"
+        >{{ item.raw.contractor.name }}</v-tooltip>
+      </v-chip>
+    </template>
+
+    <template v-slot:item.invoiceNumber="{ item }">
+      <v-chip size="x-small" link>
+        <v-icon class="mr-2">mdi-eye-outline</v-icon>
+        <span class="chip__wrapped">{{ item.raw.invoiceNumber }}</span>
+      </v-chip>
+    </template>
+
+    <template v-slot:item.actions="{ item }">
+      <v-btn
+        density="compact"
+        icon="mdi-delete"
+        size="small"
+        @click="emit('delete', item.raw._id)" />
+    </template>
+  </v-data-table>
 </template>
 
 <style>
