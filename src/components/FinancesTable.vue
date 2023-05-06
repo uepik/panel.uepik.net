@@ -40,11 +40,11 @@ const getChipValues = (category) => {
     :search="search"
     density="comfortable"
   >
-    <template v-slot:item.no="{ item }">
+    <template #item.no="{ item }">
       {{ Object.keys(props.transactions).length - props.transactions.indexOf(item.raw) }}
     </template>
 
-    <template v-slot:item.category="{ item }">
+    <template #item.category="{ item }">
       <v-chip
         :set="chip = getChipValues(item.raw.category)"
         size="x-small" variant="elevated"
@@ -55,11 +55,11 @@ const getChipValues = (category) => {
       </v-chip>
     </template>
 
-    <template v-slot:item.value="{ item }">
+    <template #item.value="{ item }">
       {{ currencyFormat(item.raw.value) }}
     </template>
 
-    <template v-slot:item.contractor.name="{ item }">
+    <template #item.contractor.name="{ item }">
       <v-chip size="small" link>
         <span class="chip__wrapped">
           {{ item.raw.contractor.name }}
@@ -72,14 +72,14 @@ const getChipValues = (category) => {
       </v-chip>
     </template>
 
-    <template v-slot:item.invoiceNumber="{ item }">
+    <template #item.invoiceNumber="{ item }">
       <v-chip size="x-small" link>
         <v-icon class="mr-2">mdi-eye-outline</v-icon>
         <span class="chip__wrapped">{{ item.raw.invoiceNumber }}</span>
       </v-chip>
     </template>
 
-    <template v-slot:item.actions="{ item }">
+    <template #item.actions="{ item }">
       <v-btn
         density="compact"
         icon="mdi-delete"
