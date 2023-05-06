@@ -86,18 +86,18 @@ const fetchContractorByNIP = async () => {
     <v-row>
       <v-col md="4" sm="12">
         <v-text-field
-          label="Numer dokumentu księgowego"
+          label="Numer dowodu księgowego"
           autofocus
           v-model="form.invoiceNumber" />
 
         <v-text-field
-          label="Data operacji"
+          label="Data zdarzenia lub operacji"
           type="date"
           v-model="form.operationDate" />
       </v-col>
       <v-col md="8" sm="12">
         <v-textarea
-          label="Opis transakcji"
+          label="Opis zdarzenia"
           clearable
           no-resize
           rows="2"
@@ -113,7 +113,7 @@ const fetchContractorByNIP = async () => {
       </v-col>
     </v-row>
 
-    <p class="font-weight-medium mb-3 mt-6">Dane kontrahenta</p>
+    <p class="font-weight-medium mb-3 mt-6">Dane kontrahenta lub innego podmiotu</p>
     <v-row>
       <v-col md="6" sm="12">
         <div class="d-flex align-center">
@@ -157,7 +157,15 @@ const fetchContractorByNIP = async () => {
       </v-col>
     </v-row>
 
-    <p class="font-weight-medium mb-3 mt-6">Wartość</p>
+    <p class="font-weight-medium mb-3 mt-6">
+      <span class="mr-2">Wartość transakcji</span>
+
+      <v-tooltip text="Przychody muszą zawierać się w określonych w art. 10a ust. 1 pkt 4 lit. a-d ustawy o działalności pożytku publicznego i o wolontariacie.">
+        <template #activator="{ props }">
+          <v-icon v-bind="props" class="text-disabled">mdi-help-circle</v-icon>
+        </template>
+      </v-tooltip>
+    </p>
     <v-row>
       <v-col md="5" sm="12">
         <v-select
