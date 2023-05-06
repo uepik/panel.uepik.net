@@ -1,9 +1,12 @@
 <script setup>
 const props = defineProps(['transactions'])
 const emit = defineEmits(['delete'])
+import { ref } from 'vue'
 import { VDataTable } from 'vuetify/labs/VDataTable'
 import isIncome from '@/helpers/isIncome'
 import currencyFormat from '@/helpers/currencyFormat'
+
+const search = ref('')
 
 const headers = [
   { title: 'L.p.', align: 'start', key: 'no', sortable: false },
@@ -22,10 +25,19 @@ const getChipValues = (category) => {
 </script>
 
 <template>
+  <v-text-field
+    v-model="search"
+    label="Wyszukiwarka transakcji"
+    class="mb-2"
+    clearable
+    hide-details
+  ></v-text-field>
+
   <v-data-table
     :headers="headers"
     :items="props.transactions"
     :items-length="props.transactions.length"
+    :search="search"
     density="comfortable"
   >
     <template v-slot:item.no="{ item }">
