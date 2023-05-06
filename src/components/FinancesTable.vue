@@ -73,8 +73,8 @@ const getChipValues = (category) => {
     </template>
 
     <template #item.invoiceNumber="{ item }">
-      <v-chip size="x-small" link>
-        <v-icon class="mr-2">mdi-eye-outline</v-icon>
+      <v-chip size="small" link>
+        <v-icon class="mr-1">mdi-file-document</v-icon>
         <span class="chip__wrapped">{{ item.raw.invoiceNumber }}</span>
       </v-chip>
     </template>
