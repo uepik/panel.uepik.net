@@ -77,7 +77,7 @@ const tryToLogIn = () => {
               block
               class="mt-1"
               variant="plain"
-              to="/register"
+              to="/rejestracja"
             >
               Nie masz konta? Zarejestruj się!
             </v-btn>

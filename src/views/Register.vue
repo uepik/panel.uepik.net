@@ -144,7 +144,7 @@ const fetchContractorByNIP = async () => {
                     block
                     class="mt-1"
                     variant="plain"
-                    to="/login"
+                    to="/logowanie"
                   >
                     Masz juz konto? Zaloguj się!
                   </v-btn>
@@ -224,7 +224,7 @@ const fetchContractorByNIP = async () => {
                     block
                     class="mt-1"
                     variant="plain"
-                    to="/login"
+                    to="/logowanie"
                   >
                     Masz juz konto? Zaloguj się!
                   </v-btn>

@@ -9,16 +9,15 @@ const navigation = [
     name: 'Aplikacja',
     items: [
       { icon: 'mdi-plus-minus-variant', title: 'Finanse', routing: '/' },
-      { icon: 'mdi-clipboard-account', title: 'Zatrudnienie', routing: '/employment' },
-      { icon: 'mdi-folder-text', title: 'Środki trwałe', routing: '/fixedAssets' },
-      { icon: 'mdi-download-box', title: 'Raporty', routing: '/reports' }
+      { icon: 'mdi-clipboard-account', title: 'Zatrudnienie', routing: '/zatrudnienie' },
+      { icon: 'mdi-folder-text', title: 'Środki trwałe', routing: '/trwale' },
+      { icon: 'mdi-download-box', title: 'Raporty', routing: '/raporty' }
     ]
   },
   {
     name: 'Konto',
     items: [
-      { icon: 'mdi-cog', title: 'Ustawienia', routing: '/settings' },
-      { icon: 'mdi-logout', title: 'Wyloguj się', routing: '/logout' }
+      { icon: 'mdi-cog', title: 'Ustawienia', routing: '/ustawienia' }
     ]
   }
 ]
@@ -84,7 +83,7 @@ const company = reactive({ ...store.getters.company })
               block
               class="mt-1"
               variant="tonal"
-              to="/logout"
+              to="/wyloguj"
             >
               Wyloguj się
             </v-btn>

@@ -16,7 +16,7 @@ const routes = [
     }
   },
   {
-    path: '/register',
+    path: '/rejestracja',
     name: 'Register',
     component: Register,
     meta: {
@@ -24,7 +24,7 @@ const routes = [
     }
   },
   {
-    path: '/login',
+    path: '/logowanie',
     name: 'Login',
     component: Login,
     meta: {
@@ -32,7 +32,7 @@ const routes = [
     }
   },
   {
-    path: '/logout',
+    path: '/wyloguj',
     name: 'Logout',
     component: Logout,
     meta: {
@@ -40,7 +40,7 @@ const routes = [
     }
   },
   {
-    path: '/settings',
+    path: '/ustawienia',
     name: 'Settings',
     component: Settings,
     meta: {
