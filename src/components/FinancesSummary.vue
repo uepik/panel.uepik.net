@@ -2,7 +2,6 @@
 const props = defineProps(['transactions'])
 
 import FinancesSummaryBox from '@/components/FinancesSummaryBox.vue'
-import currencyFormat from '@/helpers/currencyFormat'
 
 const getSum = (transactionsArray, transactionCategory) => {
   const filteredArray = transactionsArray.filter(transaction => transaction.category.includes(transactionCategory))
@@ -15,13 +14,13 @@ const getSum = (transactionsArray, transactionCategory) => {
 <template>
   <FinancesSummaryBox
     title="Przychody"
-    :value="currencyFormat(getSum(props.transactions, 'income'))" />
+    :value="getSum(props.transactions, 'income')" />
 
   <FinancesSummaryBox
     title="Koszty"
-    :value="currencyFormat(getSum(transactions, 'revenue'))" />
+    :value="getSum(transactions, 'revenue')" />
 
   <FinancesSummaryBox
     title="Zysk (strata)"
-    :value="currencyFormat(getSum(props.transactions, 'income') - getSum(props.transactions, 'revenue'))" />
+    :value="getSum(transactions, 'income') - getSum(transactions, 'revenue')" />
 </template>
