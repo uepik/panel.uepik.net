@@ -65,6 +65,14 @@ const organisationHandleSaveClick = async () => {
       isOrganisationButtonLoading.value = false
     }
 }
+
+const rodoLabel = `Wyrażam zgodę na przetwarzanie przez Fundację Rozwoju Cyfryzacji z siedzibą w
+Łodzi (ul. Wólczańska 125, 90-521 Łódź) moich danych osobowych w postaci adresu
+poczty elektronicznej w celu przesyłania mi informacji marketingowych
+dotyczących produktów i usług oferowanych przez Fundację Rozwoju Cyfryzacji z
+siedzibą w Łodzi (ul. Wólczańska 125, 90-521 Łódź) za pomocą środków
+komunikacji elektronicznej, stosownie do treści przepisu art. 10 ust.
+1 i 2 ustawy o świadczeniu usług drogą elektroniczną.`
 </script>
 
 <template>
@@ -111,7 +119,7 @@ const organisationHandleSaveClick = async () => {
             <v-checkbox
               :model-value="true"
               :disabled="isProfileButtonLoading"
-              label="Wyrażam zgodę na otrzymywanie drogą elektroniczną, na podany powyżej adres e-mail, informacji handlowych wysyłanych przez UEPiK.net z siedzibą w Łodzi, w imieniu własnym oraz na zlecenie innych osób."
+              :label="rodoLabel"
             ></v-checkbox>
 
             <v-btn

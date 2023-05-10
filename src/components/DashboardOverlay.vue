@@ -64,7 +64,12 @@ const company = reactive({ ...store.getters.company })
         <v-divider />
 
         <!-- App navigation items -->
-        <v-list density="compact" nav v-for="navCategory in navigation" :key="navCategory.name">
+        <v-list
+          density="compact"
+          nav
+          v-for="navCategory in navigation"
+          :key="navCategory.name"
+        >
           <v-list-subheader class="font-weight-500">{{ navCategory.name }}</v-list-subheader>
           <v-list-item
             v-for="item in navCategory.items"

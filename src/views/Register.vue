@@ -157,8 +157,9 @@ const fetchContractorByNIP = async () => {
                     label="Numer identyfikacji podatkowej"
                     placeholder="7311795229"
                     :disabled="isOrganisationFetching"
-                    :counter="10"
                     required
+                    hide-details
+                    class="mb-1"
                   ></v-text-field>
 
                   <v-btn 
@@ -166,7 +167,8 @@ const fetchContractorByNIP = async () => {
                     :loading="isOrganisationFetching"
                     block
                     class="mb-8 mt-1"
-                    variant="tonal">Uzupełnij automatycznie po NIP-ie</v-btn>
+                    append-icon="mdi-cloud-arrow-down-outline"
+                    variant="text">Uzupełnij automatycznie po NIP-ie</v-btn>
 
                   <!-- NGO name -->
                   <v-text-field
