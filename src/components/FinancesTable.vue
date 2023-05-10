@@ -13,7 +13,7 @@ const headers = [
   { title: 'Rodzaj', key: 'category' },
   { title: 'Data operacji', key: 'operationDate' },
   { title: 'Kwota', key: 'value' },
-  { title: 'Kontrahent', key: 'contractor.name' },
+  { title: 'Kontrahent', key: 'contractor' },
   { title: 'Podgląd dokumentu', key: 'invoiceNumber', sortable: false },
   { title: 'Akcje', key: 'actions', sortable: false },
 ]
@@ -22,6 +22,13 @@ const getChipValues = (category) => {
   if (isIncome(category)) return { color: 'green-lighten-1', icon: 'mdi-plus', title: 'Przychód' }
   else return { color: 'red-lighten-1', icon: 'mdi-minus', title: 'Koszt' }
 }
+
+const replaceContractorObj = (arr) => arr.map((item) => ({
+ ...item,
+  contractor: item.contractor.name
+}))
+
+const searchByContractor = (company) => search.value = company
 </script>
 
 <template>
@@ -35,7 +42,7 @@ const getChipValues = (category) => {
 
   <v-data-table
     :headers="headers"
-    :items="props.transactions"
+    :items="replaceContractorObj(props.transactions)"
     :items-length="props.transactions.length"
     :search="search"
     density="comfortable"
@@ -59,16 +66,16 @@ const getChipValues = (category) => {
       {{ currencyFormat(item.raw.value) }}
     </template>
 
-    <template #item.contractor.name="{ item }">
-      <v-chip size="small" link>
+    <template #item.contractor="{ item }">
+      <v-chip size="small" link @click="searchByContractor(item.raw.contractor)">
         <span class="chip__wrapped">
-          {{ item.raw.contractor.name }}
+          {{ item.raw.contractor }}
         </span>
 
         <v-tooltip
           activator="parent"
           location="top"
-        >{{ item.raw.contractor.name }}</v-tooltip>
+        >{{ item.raw.contractor }}</v-tooltip>
       </v-chip>
     </template>
 
