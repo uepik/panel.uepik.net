@@ -35,6 +35,7 @@ const searchByContractor = (company) => search.value = company
   <v-text-field
     v-model="search"
     label="Wyszukiwarka transakcji"
+    placeholder="np. rok lub data operacji, kontrahent, numer dokumentu"
     class="mb-2"
     clearable
     hide-details
