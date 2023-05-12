@@ -40,7 +40,7 @@ const store = createStore({
   actions: {
     login({ commit, dispatch }, credentials) {
       return new Promise((resolve, reject) => {
-        axios.post('http://localhost:3030/auth', credentials)
+        axios.post('_API_/auth', credentials)
           .then(response => {
             commit('setUserData', response.data.user)
             commit('setAuthStatus', true)
@@ -56,7 +56,7 @@ const store = createStore({
     },
     getTransactions({ commit, state }) {
       return new Promise((resolve, reject) => {
-        axios.get(`http://localhost:3030/transactions/${state.user._id}`)
+        axios.get(`_API_/transactions/${state.user._id}`)
           .then(response => {
             console.log(response.data)
             commit('setTransactionsList', response.data)
