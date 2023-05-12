@@ -1,6 +1,7 @@
 <script setup>
 import { ref, reactive, defineEmits } from 'vue'
 import { useStore } from 'vuex'
+import axios from 'axios';
 
 const store = useStore()
 const emit = defineEmits(['added'])
@@ -48,35 +49,29 @@ const form = reactive({
 const addTransaction = async () => {
   isAddButtonLoading.value = true
 
-  const query = await fetch('http://localhost:3030/transactions', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      ...form,
-      createdAt: Date.now(),
-      uid: store.getters.user._id
-    }),
+  axios.post('/transactions', {
+    ...form,
+    createdAt: Date.now(),
+    uid: store.getters.user._id
   })
+    .then(() => {
+      isAddButtonLoading.value = false
 
-  if (await query.json()) {
-    isAddButtonLoading.value = false
-
-    store.dispatch('getTransactions')
-      .then(() => emit('added'))
-  }
+      store.dispatch('getTransactions')
+        .then(() => emit('added'))
+    })
+    .catch(error => console.warn(error))
 }
 
 const fetchContractorByNIP = async () => {
   isContractorFetching.value = true
 
-  // const query = await fetch(`http://localhost:3030/companyByNIP/${form.contractor.nip}`)
-  const query = await fetch(`_API_/companyByNIP/${form.contractor.nip}`)
-  const response = await query.json()
-
-  if (response) {
-    form.contractor = response
-    isContractorFetching.value = false
-  }
+  axios.get(`/companyByNIP/${form.contractor.nip}`)
+    .then(response => {
+      form.contractor = response.data
+      isContractorFetching.value = false
+    })
+    .catch(error => console.warn(error))
 }
 </script>
 

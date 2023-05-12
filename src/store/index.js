@@ -2,6 +2,8 @@ import { createStore } from 'vuex'
 import axios from 'axios'
 import createPersistedState from 'vuex-persistedstate'
 
+axios.defaults.baseURL = import.meta.env.RENDER_API_URL || 'http://localhost:3030'
+
 const store = createStore({
   state: {
     isAuth: false,
@@ -40,7 +42,7 @@ const store = createStore({
   actions: {
     login({ commit, dispatch }, credentials) {
       return new Promise((resolve, reject) => {
-        axios.post('_API_/auth', credentials)
+        axios.post('/auth', credentials)
           .then(response => {
             commit('setUserData', response.data.user)
             commit('setAuthStatus', true)
@@ -56,7 +58,7 @@ const store = createStore({
     },
     getTransactions({ commit, state }) {
       return new Promise((resolve, reject) => {
-        axios.get(`_API_/transactions/${state.user._id}`)
+        axios.get(`/transactions/${state.user._id}`)
           .then(response => {
             console.log(response.data)
             commit('setTransactionsList', response.data)
