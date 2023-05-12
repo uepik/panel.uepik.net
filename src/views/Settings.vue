@@ -73,6 +73,12 @@ dotyczących produktów i usług oferowanych przez Fundację Rozwoju Cyfryzacji 
 siedzibą w Łodzi (ul. Wólczańska 125, 90-521 Łódź) za pomocą środków
 komunikacji elektronicznej, stosownie do treści przepisu art. 10 ust.
 1 i 2 ustawy o świadczeniu usług drogą elektroniczną.`
+
+const netlify = {
+  context: import.meta.env.CONTEXT || 'dev',
+  build: import.meta.env.BUILD_ID || 'dev',
+  deploy: import.meta.env.DEPLOY_ID || 'dev'
+}
 </script>
 
 <template>
@@ -180,5 +186,7 @@ komunikacji elektronicznej, stosownie do treści przepisu art. 10 ust.
         </v-card>
       </v-col>
     </v-row>
+
+    <p class="mt-4 text-disabled text-caption text-center">{{ netlify.context }}_{{ netlify.build }} ({{ netlify.deploy }})</p>
   </DashboardOverlay>
 </template>
