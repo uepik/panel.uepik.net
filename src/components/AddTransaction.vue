@@ -69,7 +69,8 @@ const addTransaction = async () => {
 const fetchContractorByNIP = async () => {
   isContractorFetching.value = true
 
-  const query = await fetch(`http://localhost:3030/companyByNIP/${form.contractor.nip}`)
+  // const query = await fetch(`http://localhost:3030/companyByNIP/${form.contractor.nip}`)
+  const query = await fetch(`_API_/companyByNIP/${form.contractor.nip}`)
   const response = await query.json()
 
   if (response) {
