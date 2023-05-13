@@ -5,6 +5,7 @@ import Login from '@/views/Login.vue'
 import Logout from '@/views/Logout.vue'
 import Settings from '@/views/Settings.vue'
 import Finances from '@/views/Finances.vue'
+import Employment from '@/views/Employment.vue'
 
 const routes = [
   {
@@ -43,6 +44,14 @@ const routes = [
     path: '/ustawienia',
     name: 'Settings',
     component: Settings,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/zatrudnienie',
+    name: 'Employment',
+    component: Employment,
     meta: {
       requiresAuth: true
     }
