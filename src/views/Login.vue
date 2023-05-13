@@ -5,6 +5,8 @@ import router from '@/router'
 import LoginActionAlert from '@/components/LoginActionAlert.vue'
 import PrivacyPolicyDisclaimer from '@/components/PrivacyPolicyDisclaimer.vue'
 
+const store = useStore()
+
 // Form v-model
 const credentialsForm = ref({
   email: '',
@@ -15,16 +17,22 @@ const credentialsForm = ref({
 let isButtonLoading = ref(false)
 
 // Login
-const store = useStore()
-
 const tryToLogIn = () => {
+  isButtonLoading.value = true
+
   store.dispatch('login', credentialsForm.value)
-    .then(() => router.push('/'))
-    .catch(() => router.push({
-      query: {
-        action:'invalid-auth-credentials'
-      }
-    }))
+    .then(() => {
+      isButtonLoading.value = false
+      router.push('/')
+    })
+    .catch(() => {
+      isButtonLoading.value = false
+      router.push({
+        query: {
+          action:'invalid-auth-credentials'
+        }
+      })
+    })
 }
 </script>
 
@@ -49,6 +57,7 @@ const tryToLogIn = () => {
             <!-- E-mail -->
             <v-text-field
               v-model="credentialsForm.email"
+              :disabled="isButtonLoading"
               label="Adres e-mail"
               :autofocus="true"
               hide-details
@@ -57,6 +66,7 @@ const tryToLogIn = () => {
             <!-- Password -->
             <v-text-field
               v-model="credentialsForm.password"
+              :disabled="isButtonLoading"
               label="Hasło"
               type="password"
               class="mt-2"
