@@ -1,6 +1,9 @@
 <script setup>
 import { ref, reactive } from 'vue'
 import PrivacyPolicyDisclaimer from '@/components/PrivacyPolicyDisclaimer.vue'
+import LoginActionAlert from '@/components/LoginActionAlert.vue'
+import router from '@/router'
+import axios from 'axios'
 
 let tab = ref('Twoje dane')
 const viewTabItems = ['Twoje dane', 'Dane organizacji']
@@ -24,23 +27,33 @@ let isRegisterButtonLoading = ref(false)
 let isAccountCreated = ref(false)
 let isOrganisationFetching = ref(false)
 
-const register = async () => {
+const register = () => {
   isRegisterButtonLoading.value = true
 
-  if (!isAccountCreated.value) { // allow 1 register in session, needs improve on backend
-    const createUserQuery = await fetch('http://localhost:3030/users', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ...form.value,
-        createdAt: Date.now()
-      }),
+  // allow 1 register in session, needs improve on backend
+  if (!isAccountCreated.value) {
+    axios.post('/users', {
+      ...form,
+      createdAt: Date.now()
     })
-    
-    if (await createUserQuery.text()) {
-      isRegisterButtonLoading.value = false
-      isAccountCreated.value = true
-    }
+      .then(() => {
+        isRegisterButtonLoading.value = false
+        isAccountCreated.value = true
+
+        router.push({
+          name: 'Login',
+          query: {
+            action: 'registered-successfully'
+          }
+        })
+      })
+      .catch(() => {
+        router.push({
+          query: {
+            action: 'register-error'
+          }
+        })
+      })
   }
 }
 const fetchContractorByNIP = async () => {
@@ -79,11 +92,15 @@ const fetchContractorByNIP = async () => {
             </h1>
           </v-card-title>
 
-          <v-alert
+          <LoginActionAlert
+            v-if="$route.query.action"  
+            :actionQueryValue="$route.query.action" />
+
+          <!-- <v-alert
             text="Konto zostało utworzone, przejdź do logowania."
             type="success"
             v-if="isAccountCreated"
-          ></v-alert>
+          ></v-alert> -->
 
           <v-tabs
             v-model="tab"
@@ -114,18 +131,21 @@ const fetchContractorByNIP = async () => {
                   <!-- First & last name -->
                   <v-text-field
                     v-model="form.firstLastName"
+                    :disabled="isRegisterButtonLoading"
                     label="Imię i nazwisko"
                   ></v-text-field>
 
                   <!-- E-mail -->
                   <v-text-field
                     v-model="form.email"
+                    :disabled="isRegisterButtonLoading"
                     label="Adres e-mail"
                   ></v-text-field>
 
                   <!-- Password -->
                   <v-text-field
                     v-model="form.password"
+                    :disabled="isRegisterButtonLoading"
                     label="Hasło"
                     type="password"
                   ></v-text-field>
@@ -134,7 +154,8 @@ const fetchContractorByNIP = async () => {
                   <v-btn
                     block
                     variant="tonal"
-                    @click="tab = 'Dane firmy'"
+                    @click="tab = 'Dane organizacji'"
+                    :disabled="isRegisterButtonLoading"
                   >
                     Przejdź dalej
                   </v-btn>
@@ -145,6 +166,7 @@ const fetchContractorByNIP = async () => {
                     class="mt-1"
                     variant="plain"
                     to="/logowanie"
+                    :disabled="isRegisterButtonLoading"
                   >
                     Masz juz konto? Zaloguj się!
                   </v-btn>
@@ -156,7 +178,7 @@ const fetchContractorByNIP = async () => {
                     v-model="form.company.nip"
                     label="Numer identyfikacji podatkowej"
                     placeholder="7311795229"
-                    :disabled="isOrganisationFetching"
+                    :disabled="isOrganisationFetching || isRegisterButtonLoading"
                     required
                     hide-details
                     class="mb-1"
@@ -165,6 +187,7 @@ const fetchContractorByNIP = async () => {
                   <v-btn 
                     @click="fetchContractorByNIP"
                     :loading="isOrganisationFetching"
+                    :disabled="isRegisterButtonLoading"
                     block
                     class="mb-8 mt-1"
                     append-icon="mdi-cloud-arrow-down-outline"
@@ -174,7 +197,7 @@ const fetchContractorByNIP = async () => {
                   <v-text-field
                     v-model="form.company.name"
                     :loading="isOrganisationFetching"
-                    :disabled="isOrganisationFetching"
+                    :disabled="isOrganisationFetching || isRegisterButtonLoading"
                     label="Nazwa organizacji"
                     placeholder="Fundacja Rozwoju Cyfryzacji"
                     required
@@ -184,7 +207,7 @@ const fetchContractorByNIP = async () => {
                   <v-text-field
                     v-model="form.company.address.street"
                     :loading="isOrganisationFetching"
-                    :disabled="isOrganisationFetching"
+                    :disabled="isOrganisationFetching || isRegisterButtonLoading"
                     label="Adres"
                     placeholder="ul. Piotrkowska 46/6u"
                     required
@@ -194,7 +217,7 @@ const fetchContractorByNIP = async () => {
                   <v-text-field
                     v-model="form.company.address.zipCode"
                     :loading="isOrganisationFetching"
-                    :disabled="isOrganisationFetching"
+                    :disabled="isOrganisationFetching || isRegisterButtonLoading"
                     label="Kod pocztowy"
                     placeholder="90-265"
                     required
@@ -204,7 +227,7 @@ const fetchContractorByNIP = async () => {
                   <v-text-field
                     v-model="form.company.address.city"
                     :loading="isOrganisationFetching"
-                    :disabled="isOrganisationFetching"
+                    :disabled="isOrganisationFetching || isRegisterButtonLoading"
                     label="Miejscowość"
                     placeholder="Łódź"
                     required

@@ -5,6 +5,7 @@ import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import FinancesSummary from '../components/FinancesSummary.vue'
 import FinancesTable from '../components/FinancesTable.vue'
+import axios from 'axios'
 
 const store = useStore()
 const uid = store.getters.user._id
@@ -31,21 +32,17 @@ const showAlert = (type, message) => {
 
 const checkIsAnyTransaction = () => Object.keys(transactions).length > 0
 
-const handleDeleteTransaction = async (id) => {
-  showAlert('info', 'Poprawnie usunięto transakcję.')
+const handleDeleteTransaction = (id) => {
   const isConfirmed = confirm('Czy na pewno chcesz usunąć tę transakcję?')
 
   if (isConfirmed) {
-    const deleteQuery = await fetch(`http://localhost:3030/transactions/${uid}/${id}`, {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' }
-    })
-
-    if (await deleteQuery.text()) {
-      // fetch all transactions to store
-      store.dispatch('getTransactions')
-      showAlert('info', 'Poprawnie usunięto transakcję.')
-    }
+    axios.delete(`/transactions/${uid}/${id}`)
+      .then(() => {
+        // fetch all transactions to store
+        store.dispatch('getTransactions')
+        showAlert('info', 'Poprawnie usunięto transakcję.')
+      })
+      .catch(() => showAlert('error', 'Wystąpił błąd podczas usuwania transkacji. Prosimy o zgłoszenie problemu: uepik@frc.org.pl'))
   }
 }
 
