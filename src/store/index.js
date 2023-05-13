@@ -2,7 +2,9 @@ import { createStore } from 'vuex'
 import axios from 'axios'
 import createPersistedState from 'vuex-persistedstate'
 
-axios.defaults.baseURL = `${import.meta.env.RENDER_API_URL}` || 'http://localhost:3030'
+axios.defaults.baseURL = import.meta.env.MODE !== 'development' ? 'https://api.uepik.net' : 'http://localhost:3030'
+
+console.log('tryb:', import.meta.env.MODE)
 
 const store = createStore({
   state: {
