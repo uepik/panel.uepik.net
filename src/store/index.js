@@ -2,7 +2,7 @@ import { createStore } from 'vuex'
 import axios from 'axios'
 import createPersistedState from 'vuex-persistedstate'
 
-axios.defaults.baseURL = import.meta.env.RENDER_API_URL || 'http://localhost:3030'
+axios.defaults.baseURL = `${import.meta.env.RENDER_API_URL}` || 'http://localhost:3030'
 
 const store = createStore({
   state: {
