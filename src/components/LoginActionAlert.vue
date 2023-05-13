@@ -20,7 +20,17 @@ const actionsArr = [
   {
     query: 'settings-was-changed',
     vAlertType: 'info',
-    message: 'Zmieniono ustawienia konta. Zaloguj się ponownie.'
+    message: 'Zmieniono ustawienia konta. Zaloguj się ponownie.'
+  },
+  {
+    query: 'register-error',
+    vAlertType: 'error',
+    message: 'Wystąpił błąd podczas rejestracji.'
+  },
+  {
+    query: 'registered-successfully',
+    vAlertType: 'success',
+    message: 'Konto zostało utworzone, przejdź do logowania.'
   }
 ]
 
