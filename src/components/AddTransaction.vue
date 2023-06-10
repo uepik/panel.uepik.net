@@ -99,13 +99,6 @@ const fetchContractorByNIP = async () => {
           rows="2"
           no-gutters
           v-model="form.description" />
-
-        <v-file-input
-          show-size
-          counter
-          label="Wgraj dokument księgowy"
-          variant="outlined"
-        ></v-file-input>
       </v-col>
     </v-row>
 

@@ -1,4 +1,4 @@
-<script setup >
+<script setup>
 import DashboardOverlay from '@/components/DashboardOverlay.vue'
 import EmployeesTable from '@/components/EmployeesTable.vue'
 import { ref, reactive, computed } from 'vue'

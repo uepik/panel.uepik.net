@@ -14,7 +14,7 @@ const headers = [
   { title: 'Data operacji', key: 'operationDate' },
   { title: 'Kwota', key: 'value' },
   { title: 'Kontrahent', key: 'contractor' },
-  { title: 'Podgląd dokumentu', key: 'invoiceNumber', sortable: false },
+  { title: 'Numer dokumentu', key: 'invoiceNumber', sortable: false },
   { title: 'Akcje', key: 'actions', sortable: false },
 ]
 
@@ -28,7 +28,7 @@ const replaceContractorObj = (arr) => arr.map((item) => ({
   contractor: item.contractor.name
 }))
 
-const searchByContractor = (company) => search.value = company
+const searchBy = (company) => search.value = company
 </script>
 
 <template>
@@ -68,7 +68,7 @@ const searchByContractor = (company) => search.value = company
     </template>
 
     <template #item.contractor="{ item }">
-      <v-chip size="small" link @click="searchByContractor(item.raw.contractor)">
+      <v-chip size="small" link @click="searchBy(item.raw.contractor)">
         <span class="chip__wrapped">
           {{ item.raw.contractor }}
         </span>
@@ -81,8 +81,7 @@ const searchByContractor = (company) => search.value = company
     </template>
 
     <template #item.invoiceNumber="{ item }">
-      <v-chip size="small" link>
-        <v-icon class="mr-1">mdi-file-document</v-icon>
+      <v-chip size="small" link @click="searchBy(item.raw.invoiceNumber)">
         <span class="chip__wrapped">{{ item.raw.invoiceNumber }}</span>
       </v-chip>
     </template>
