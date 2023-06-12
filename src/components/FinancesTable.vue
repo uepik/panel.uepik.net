@@ -91,7 +91,8 @@ const searchBy = (company) => search.value = company
         density="compact"
         icon="mdi-delete"
         size="small"
-        @click="emit('delete', item.raw._id)" />
+        @click="emit('delete', item.raw._id)"
+      />
     </template>
   </v-data-table>
 </template>

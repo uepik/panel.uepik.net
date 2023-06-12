@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import DashboardOverlay from '@/components/DashboardOverlay.vue'
@@ -9,8 +9,31 @@ const store = useStore()
 
 const userForm = reactive({ ...store.getters.user })
 const companyForm = reactive({ ...store.getters.company })
+const transactions = computed(() => store.getters.transactions)
 
 const uid = store.getters.user._id
+
+// const filtered = {a:1}
+
+const dates = reactive({
+  from: '',
+  to: ''
+})
+
+// Filter by dates
+const filterByDates = (transactions, from, to) => {
+  return transactions.filter(item => {
+    const transactionsDate = new Date(item.operationDate);
+    return (transactionsDate >= new Date(from) && transactionsDate <= new Date(to));
+  })
+}
+
+const filtered = () => {
+  // console.log(transactions.value)
+  console.log(
+    filterByDates(transactions.value, dates.from, dates.to)
+  )
+}
 </script>
 
 <template>
@@ -37,6 +60,7 @@ const uid = store.getters.user._id
                   type="date"
                   label="Data początkowa"
                   hide-details
+                  v-model="dates.from"
                 />
 
               </v-col>
@@ -46,6 +70,7 @@ const uid = store.getters.user._id
                   type="date"
                   label="Data końcowa"
                   hide-details
+                  v-model="dates.to"
                 />
 
               </v-col>
@@ -72,6 +97,12 @@ const uid = store.getters.user._id
             </v-menu>
           </v-card-text>
         </v-card>
+      </v-col>
+      <v-col><div style="font-family:monospace !important;font-size:14px;">
+        {{ () => filterByDates(transactions.value, dates.from, dates.to) }}
+      </div>
+      
+      <v-btn @click="filtered">Filtruj i konsoluj</v-btn>
       </v-col>
     </v-row>
 

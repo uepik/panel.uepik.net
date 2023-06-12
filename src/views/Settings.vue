@@ -132,6 +132,7 @@ const netlify = {
               block
               @click="userHandleSaveClick"
               :loading="isProfileButtonLoading"
+              color="primary"
             >Zapisz zmiany</v-btn>
           </v-card-text>
         </v-card>
@@ -181,6 +182,7 @@ const netlify = {
             <v-btn
               block
               @click="organisationHandleSaveClick"
+              color="primary"
             >Zapisz zmiany</v-btn>
           </v-card-text>
         </v-card>
