@@ -24,10 +24,10 @@ const uid = store.getters.user._id
     <v-row>
       <v-col md="6" sm="12">
         <v-card>
-          <v-card-title>Bilans organizacji</v-card-title>
+          <v-card-title>Bilans finansowy</v-card-title>
           <v-card-text>
             <p>
-              Bilans organizacji umożliwia bieżące monitorowanie i analizę przychodów oraz kosztów w okresie określonym poniżej, umożliwiając Ci skuteczne zarządzanie budżetem i optymalizację finansową.
+              Raport umożliwia bieżące monitorowanie i analizę przychodów oraz kosztów w okresie określonym poniżej, umożliwiając Ci skuteczne zarządzanie budżetem i optymalizację finansową.
             </p>
 
             <v-row class="mt-4 mb-1">
