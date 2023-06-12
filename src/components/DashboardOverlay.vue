@@ -42,7 +42,9 @@ const company = reactive({ ...store.getters.company })
       >
         <template v-slot:prepend>
           <v-list-item-media class="py-5 text-center">
-            <img src="/uepik_logo.svg" height="30">
+            <router-link to="/">
+              <img src="/uepik_logo.svg" height="30">
+            </router-link>
           </v-list-item-media>
 
           <v-divider />
