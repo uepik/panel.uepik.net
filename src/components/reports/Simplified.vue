@@ -183,10 +183,10 @@ const dateFormatter = (date) => {
       <v-menu activator="#download-activator">
         <v-list elevation="1">
           <v-list-item link @click="downloadPDF">
-            <v-list-item-title>Plik PDF</v-list-item-title>
+            <v-list-item-title class="uepik-dropdown-item">Plik PDF</v-list-item-title>
           </v-list-item>
           <v-list-item link disabled>
-            <v-list-item-title>Arkusz kalkulacyjny (.xlsx)</v-list-item-title>
+            <v-list-item-title class="uepik-dropdown-item">Arkusz kalkulacyjny (.xlsx)</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>

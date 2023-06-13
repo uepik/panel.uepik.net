@@ -78,12 +78,14 @@ textarea,
   font-weight: 500 !important;
 }
 
-.v-select__content .v-list-item-title {
+.v-select__content .v-list-item-title,
+.uepik-dropdown-item {
   font-size: 14px !important;
 }
 
 .text-caption,
-.v-list-subheader__text {
+.v-list-subheader__text,
+.uepik-dropdown-item {
   letter-spacing: 0 !important;
   font-weight: 500 !important;
 }
