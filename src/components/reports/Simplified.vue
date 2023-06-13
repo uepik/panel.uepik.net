@@ -3,6 +3,7 @@ import { reactive, computed } from 'vue'
 import { useStore } from 'vuex'
 import { usePDF } from 'vue3-pdfmake'
 import currencyFormat from '@/helpers/currencyFormat'
+import sumByCategory from '@/helpers/sumByCategory'
 
 const store = useStore()
 const pdf = usePDF()
@@ -25,14 +26,14 @@ const filterByDates = (transactions, from, to) => {
 }
 
 // Sum by category
-const sumByCategory = (arr, category) => {
+const sumBySpecificCategory = (arr, category) => {
   const filtered = arr.filter(item => item.category === category).reduce((acc, next) => acc + next.value, 0)
   return currencyFormat(filtered || 0)
 }
 
 const count = (category) => {
   const array = filterByDates(transactions.value, dates.from, dates.to)
-  return sumByCategory(array, category)
+  return sumBySpecificCategory(array, category)
 }
 
 // PDF
@@ -60,7 +61,16 @@ const downloadPDF = () => {
         layout: 'lightHorizontalLines',
         table: {
           body: [
-            [ 'Kategoria', 'Wartość'],
+            [
+              {
+                text: 'Kategoria',
+                bold: true
+              },
+              {
+                text: 'Wartość',
+                bold: true
+              }
+            ],
             [
               'Przychody z działalności nieodpłatnej pożytku publicznego',
               count('income_charity')
@@ -80,6 +90,16 @@ const downloadPDF = () => {
             [
               'Koszty niestanowiące uzyskania przychodów',
               count('revenue_ineligible')
+            ],
+            [
+              {
+                text: 'Zysk (strata)',
+                bold: true
+              },
+              {
+                text: currencyFormat(sumByCategory(transactions.value, 'income') - sumByCategory(transactions.value, 'revenue')),
+                bold: true
+              }
             ]
           ]
         }
