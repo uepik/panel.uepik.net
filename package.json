@@ -13,6 +13,7 @@
     "axios": "^1.3.4",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6",
+    "vue3-pdfmake": "^2.2.0",
     "vuetify": "^3.1.7",
     "vuex": "^4.1.0",
     "vuex-persistedstate": "^4.1.0"
