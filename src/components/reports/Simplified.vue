@@ -4,6 +4,7 @@ import { useStore } from 'vuex'
 import { usePDF } from 'vue3-pdfmake'
 import currencyFormat from '@/helpers/currencyFormat'
 import sumByCategory from '@/helpers/sumByCategory'
+import dateToISO from '@/helpers/dateToISO'
 
 const store = useStore()
 const pdf = usePDF()
@@ -134,26 +135,17 @@ const insertDate = (range) => {
 
   switch (range) {
     case 'day':
-      dates.from = dates.to = dateFormatter(new Date())
+      dates.from = dates.to = dateToISO(new Date())
       break
     case 'month':
-      dates.from = dateFormatter(new Date(date.getFullYear(), date.getMonth(), 1))
-      dates.to = dateFormatter(new Date(date.getFullYear(), date.getMonth() + 1, 0))
+      dates.from = dateToISO(new Date(date.getFullYear(), date.getMonth(), 1))
+      dates.to = dateToISO(new Date(date.getFullYear(), date.getMonth() + 1, 0))
       break
     case 'year':
-      dates.from = dateFormatter(new Date(date.getFullYear(), 0, 1))
-      dates.to = dateFormatter(new Date(date.getFullYear(), 11, 31))
+      dates.from = dateToISO(new Date(date.getFullYear(), 0, 1))
+      dates.to = dateToISO(new Date(date.getFullYear(), 11, 31))
       break
   }
-}
-
-const dateFormatter = (date) => {
-  const year = date.toLocaleString('default', { year: 'numeric' })
-  const month = date.toLocaleString('default', { month: '2-digit' })
-  const day = date.toLocaleString('default', { day: '2-digit' })
-
-  // => yyyy-mm-dd
-  return `${ year }-${ month }-${ day }`
 }
 </script>
 
