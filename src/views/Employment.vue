@@ -35,11 +35,7 @@ const addEmployer = () => {
 
 <template>
   <DashboardOverlay>
-    <v-row>
-      <v-col>
-        <h2 class="text-h4 view-title">Zatrudnienie</h2>
-      </v-col>
-    </v-row>
+    <template #title>Zatrudnienie</template>
 
     <v-row>
       <v-col col="12">

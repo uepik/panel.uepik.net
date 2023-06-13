@@ -55,11 +55,7 @@ const handleAddedTransaction = () => {
 
 <template>
   <DashboardOverlay>
-    <v-row>
-      <v-col>
-        <h2 class="text-h4 view-title">Ewidencja przychodów i kosztów</h2>
-      </v-col>
-    </v-row>
+    <template #title>Ewidencja przychodów i kosztów</template>
 
     <v-row>
       <v-col col="12">

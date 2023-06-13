@@ -5,11 +5,7 @@ import Simplified from '@/components/reports/Simplified.vue'
 
 <template>
   <DashboardOverlay>
-    <v-row>
-      <v-col>
-        <h2 class="text-h4 view-title">Przeglądarka raportów</h2>
-      </v-col>
-    </v-row>
+    <template #title>Przeglądarka raportów</template>
 
     <v-row>
       <v-col md="6" sm="12">

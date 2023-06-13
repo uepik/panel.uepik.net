@@ -101,6 +101,13 @@ const company = reactive({ ...store.getters.company })
 
     <!-- Space for content -->
     <v-main class="ma-5">
+      <v-row>
+        <v-col>
+          <h2 class="text-h4 view-title">
+            <slot name="title"></slot>
+          </h2>
+        </v-col>
+      </v-row>
       <slot></slot>
     </v-main>
   </v-app>

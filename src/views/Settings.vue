@@ -83,11 +83,7 @@ const netlify = {
 
 <template>
   <DashboardOverlay>
-    <v-row>
-      <v-col>
-        <h2 class="text-h4 view-title">Zarządzaj ustawieniami</h2>
-      </v-col>
-    </v-row>
+    <template #title>Zarządzaj ustawieniami</template>
 
     <v-alert
       v-if="isErrorVisible"
