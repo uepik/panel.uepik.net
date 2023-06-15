@@ -1,9 +1,9 @@
 <script setup>
-import DashboardOverlay from '@/components/DashboardOverlay.vue'
-import EmployeesTable from '@/components/EmployeesTable.vue'
 import { ref, reactive, computed } from 'vue'
 import { useStore } from 'vuex'
 import axios from 'axios'
+import DashboardOverlay from '@/components/DashboardOverlay.vue'
+import EmployeesTable from '@/components/EmployeesTable.vue'
 
 const store = useStore()
 const employees = computed(() => store.getters.employees)
@@ -92,12 +92,9 @@ const addEmployer = () => {
                 </v-form>
               </v-card-text>
             </v-card>
-            
           </v-window-item>
         </v-window>
-            
       </v-col>
-
     </v-row>
   </DashboardOverlay>
 </template>

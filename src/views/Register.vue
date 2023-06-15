@@ -1,9 +1,9 @@
 <script setup>
 import { ref, reactive } from 'vue'
-import PrivacyPolicyDisclaimer from '@/components/PrivacyPolicyDisclaimer.vue'
-import LoginActionAlert from '@/components/LoginActionAlert.vue'
 import router from '@/router'
 import axios from 'axios'
+import PrivacyPolicyDisclaimer from '@/components/PrivacyPolicyDisclaimer.vue'
+import LoginActionAlert from '@/components/LoginActionAlert.vue'
 
 let tab = ref('Twoje dane')
 const viewTabItems = ['Twoje dane', 'Dane organizacji']
@@ -95,12 +95,6 @@ const fetchContractorByNIP = async () => {
           <LoginActionAlert
             v-if="$route.query.action"  
             :actionQueryValue="$route.query.action" />
-
-          <!-- <v-alert
-            text="Konto zostało utworzone, przejdź do logowania."
-            type="success"
-            v-if="isAccountCreated"
-          ></v-alert> -->
 
           <v-tabs
             v-model="tab"

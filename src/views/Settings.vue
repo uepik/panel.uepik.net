@@ -66,19 +66,7 @@ const organisationHandleSaveClick = async () => {
     }
 }
 
-const rodoLabel = `Wyrażam zgodę na przetwarzanie przez Fundację Rozwoju Cyfryzacji z siedzibą w
-Łodzi (ul. Wólczańska 125, 90-521 Łódź) moich danych osobowych w postaci adresu
-poczty elektronicznej w celu przesyłania mi informacji marketingowych
-dotyczących produktów i usług oferowanych przez Fundację Rozwoju Cyfryzacji z
-siedzibą w Łodzi (ul. Wólczańska 125, 90-521 Łódź) za pomocą środków
-komunikacji elektronicznej, stosownie do treści przepisu art. 10 ust.
-1 i 2 ustawy o świadczeniu usług drogą elektroniczną.`
-
-const netlify = {
-  context: import.meta.env.CONTEXT || 'dev',
-  build: import.meta.env.BUILD_ID || 'dev',
-  deploy: import.meta.env.DEPLOY_ID || 'dev'
-}
+const rodoLabel = `Wyrażam zgodę na przetwarzanie przez Fundację Rozwoju Cyfryzacji z siedzibą w Łodzi moich danych osobowych w postaci adresu poczty elektronicznej w celu przesyłania mi informacji marketingowych dotyczących produktów i usług oferowanych przez Fundację Rozwoju Cyfryzacji z siedzibą w Łodzi za pomocą środków komunikacji elektronicznej, stosownie do treści przepisu art. 10 ust. 1 i 2 ustawy o świadczeniu usług drogą elektroniczną.`
 </script>
 
 <template>
@@ -185,6 +173,5 @@ const netlify = {
       </v-col>
     </v-row>
 
-    <p class="mt-4 text-disabled text-caption text-center">{{ netlify.context }}_{{ netlify.build }} ({{ netlify.deploy }})</p>
   </DashboardOverlay>
 </template>

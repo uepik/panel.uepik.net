@@ -1,16 +1,16 @@
-<script setup >
-import DashboardOverlay from '@/components/DashboardOverlay.vue'
-import AddTransaction from '@/components/AddTransaction.vue'
+<script setup>
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
-import FinancesSummary from '../components/FinancesSummary.vue'
-import FinancesTable from '../components/FinancesTable.vue'
 import axios from 'axios'
+import DashboardOverlay from '@/components/DashboardOverlay.vue'
+import AddTransaction from '@/components/AddTransaction.vue'
+import FinancesSummary from '@/components/FinancesSummary.vue'
+import FinancesTable from '@/components/FinancesTable.vue'
 
 const store = useStore()
 const uid = store.getters.user._id
-
 const transactions = computed(() => store.getters.transactions)
+
 const tab = ref('summary')
 const alert = ref({
   isVisible: false,
@@ -66,9 +66,6 @@ const handleAddedTransaction = () => {
             <v-tab value="new-transaction">
               <v-icon class="mr-3">mdi-paperclip-plus</v-icon> Nowa transakcja
             </v-tab>
-            <v-tab value="export">
-              <v-icon class="mr-3">mdi-file-excel-outline</v-icon> Eksportuj dane
-            </v-tab>
           </v-tabs>
         </v-card>
 
@@ -111,31 +108,8 @@ const handleAddedTransaction = () => {
             </v-card>
             
           </v-window-item>
-
-          <v-window-item value="export">
-            <v-row>
-              <v-col md="6" sm="12">
-                <v-card>
-                  <v-card-title>Exportuj do pliku <code>.xlsx</code></v-card-title>
-                  <v-card-text>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Provident nemo voluptatibus praesentium expedita molestias.
-                    Magnam obcaecati quidem, necessitatibus sint nulla quae
-                    mollitia nam maiores. Vel quam vero totam accusamus labore.
-                  </v-card-text>
-                  <v-card-actions>
-                    <v-btn block>
-                      Eksportuj
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-col>
-            </v-row>
-          </v-window-item>
         </v-window>
-            
       </v-col>
-
     </v-row>
   </DashboardOverlay>
 </template>
