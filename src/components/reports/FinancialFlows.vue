@@ -57,7 +57,7 @@ const downloadPDF = () => {
         style: 'table',
         table: {
           widths: [80, 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
-          heights: ['auto', 20, 20, 'auto', 'auto', 'auto', 'auto'],
+          heights: ['auto', 20, 20, 30, 'auto', 30, 'auto'],
           // headerRows: 2,
           // keepWithHeaderRows: 1,
           body: [
